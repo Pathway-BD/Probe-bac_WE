@@ -8,7 +8,7 @@
 
 <!-- Open Graph / Link Preview -->
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://pathway-bd.github.io/Probe-bac_WE/probebacwe.html">
+<meta property="og:url" content="https://pathway-bd.github.io/Probe-bac_WE/">
 <meta property="og:title" content="ProBe-Bac WE | 수처리 적용 플랜 계산기">
 <meta property="og:description" content="농가 환경에 맞는 ProBe-Bac WE 수처리 투여 스케줄을 간편하게 계산해보세요. 품종·사육 일수·급수 조건을 입력하면 최적 투여 플랜을 바로 확인할 수 있습니다.">
 <meta property="og:image" content="https://pathway-bd.github.io/Probe-bac_WE/probebac-we-logo.png">
@@ -47,17 +47,25 @@
         margin-top: 20px; gap: 16px;
     }
     .bottom-banner-left {
-        display: flex; align-items: center; flex-shrink: 0;
+        display: flex; align-items: center; gap: 14px; flex-shrink: 0;
     }
-    .bottom-banner-left img { height: 70px; width: auto; object-fit: contain; }
+    .bottom-banner-left img { height: 52px; width: auto; object-fit: contain; }
+    .bottom-banner-tagline { line-height: 1.5; }
+    .bottom-banner-tagline .tagline-title {
+        font-size: 0.92em; font-weight: 700; color: #1e3a7a;
+    }
+    .bottom-banner-tagline .tagline-url {
+        font-size: 0.75em; color: #777;
+    }
     .bottom-banner-right {
-        font-size: 0.78em; color: #444; line-height: 1.7; text-align: right;
+        display: flex; flex-direction: column; align-items: flex-end; gap: 8px;
     }
-    .bottom-banner-right p { margin: 0; }
-    .bottom-banner-right strong { color: #1e3a7a; }
+    .bottom-banner-right p {
+        margin: 0; font-size: 0.78em; color: #555; font-style: italic;
+    }
     .contact-btn {
-        display: inline-block; margin-top: 8px;
-        padding: 6px 16px; background: #004a99; color: #fff;
+        display: inline-block;
+        padding: 7px 20px; background: #004a99; color: #fff;
         border-radius: 20px; font-size: 0.82em; font-weight: 600;
         text-decoration: none; transition: background 0.2s;
         white-space: nowrap;
@@ -65,7 +73,7 @@
     .contact-btn:hover { background: #003070; }
     @media (max-width: 768px) {
         .bottom-banner { flex-direction: column; align-items: flex-start; padding: 14px 14px; }
-        .bottom-banner-right { text-align: left; }
+        .bottom-banner-right { align-items: flex-start; }
     }
 
     body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f4f8; color: #333; padding: 0; }
@@ -254,12 +262,15 @@
 <!-- Bottom Banner -->
 <footer class="bottom-banner">
     <div class="bottom-banner-left">
-        <img src="Pathway Slogan_example.png" alt="Pathway Intermediates – The Science of Feeding Tomorrow">
+        <img src="Pathway Intermediates_CI.png" alt="Pathway Intermediates">
+        <div class="bottom-banner-tagline">
+            <div class="tagline-title">The Science of Feeding Tomorrow</div>
+            <div class="tagline-url">www.pathway-intermediates.com</div>
+        </div>
     </div>
     <div class="bottom-banner-right">
-        <p><strong>E-mail</strong> &nbsp;Ralph.kim@pathway-intermediates.com</p>
-        <p><strong>Contact No.</strong> &nbsp;+880 1915457928</p>
-        <a href="https://www.pathway-intermediates.com/#contact" class="contact-btn" target="_blank" rel="noopener">🌐 홈페이지 바로가기</a>
+        <p>For more details or inquiries, please visit our website.</p>
+        <a href="https://www.pathway-intermediates.com/" class="contact-btn" target="_blank" rel="noopener">Visit Website →</a>
     </div>
 </footer>
 
