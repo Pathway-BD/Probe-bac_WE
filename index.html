@@ -112,14 +112,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         border-left: 10px solid #28a745; background: #f4fff6;
         display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
     }
-    .res-card.pkg-settings { border-left: 10px solid #17a2b8; background: #fff; }
+    .res-card.settings-card { border-left: 10px solid #1a4fa0; background: #f8faff; }
 
-    .pb-top-layout { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 15px; margin-bottom: 20px; align-items: start; }
-    .farm-vars-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px; }
-    .farm-vars-inner .field-box { margin-bottom: 8px; }
-    .farm-vars-inner .full-width { grid-column: 1 / -1; }
-    .farm-vars-inner .method-hint { margin-top: 0; align-self: start; }
-    .farm-vars-inner .period-fields { display: flex; flex-direction: column; gap: 0; margin-top: 0; padding-top: 0; border-top: none; align-self: start; }
+    .pb-top-layout { display: grid; grid-template-columns: 1fr 0.7fr 1.6fr; gap: 15px; margin-bottom: 20px; align-items: start; }
+    .settings-card-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 0 15px; align-items: start; }
+    .settings-col-title { font-size: 0.72em; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid #dde3ef; }
+    .settings-info-note { margin-top: 10px; padding: 7px 10px; background: #eef7ff; border: 1px solid #cfe7ff; border-radius: 6px; color: #335; font-size: 0.78em; grid-column: 1/-1; }
     .pb-mid-layout { display: none; grid-template-columns: 1.5fr 1fr; gap: 15px; margin-bottom: 20px; }
 
     .table-scroll { height: 500px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; }
@@ -130,15 +128,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     }
     .table-scroll td { font-size: 0.95em; padding: 12px 5px; vertical-align: middle; text-align: center; border-bottom: 1px solid #f0f0f0; }
 
-    .refill-row { background-color: #fff8e1; }
+    .refill-row { background-color: #f0f4ff; }
     .guide-action {
-        color: #d32f2f; font-weight: bold; font-size: 1.1em;
-        background: #ffecb3; padding: 5px 10px; border-radius: 5px; display: inline-block;
+        color: #d32f2f; font-weight: bold; font-size: 1.0em;
+        background: #ffecb3; padding: 4px 8px; border-radius: 5px; display: inline-block;
     }
     .day-badge {
         display: inline-block; background: #e65100; color: #fff;
         border-radius: 5px; padding: 2px 8px; font-size: 0.9em; margin: 2px;
     }
+    .day-badge-blue {
+        display: inline-block; background: #1a4fa0; color: #fff;
+        border-radius: 5px; padding: 2px 8px; font-size: 0.9em; font-weight: 700;
+    }
+    .action-guide-add { color: #1a4fa0; font-weight: 600; font-size: 0.88em; }
+    .action-guide-maintain { color: #999; font-style: italic; font-size: 0.83em; }
+    .action-guide-none { color: #ccc; font-size: 0.83em; }
 
     .input-group {
         margin-bottom: 0; padding: 16px; background: #fff9f0;
@@ -152,18 +157,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     }
 
 
-    .method-hint {
-        margin-top: 8px; padding: 10px 12px; background: #eef7ff;
-        border: 1px solid #cfe7ff; border-radius: 6px; color: #335;
-        font-size: 0.82em; line-height: 1.55;
-    }
-    .period-fields {
-        margin-top: 10px; padding-top: 10px; border-top: 1px dashed #ffd8a8;
-        display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-    }
     .dosatron-fields { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #ffd8a8; }
     .dosatron-card { display: none; border-left: 10px solid #6f42c1; background: #fbf8ff; }
-    .res-card.farm-vars-card { border-left: 10px solid #e65100; background: #fff9f0; }
     .table-card { border-radius: 12px; border: 1px solid #dee2e6; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden; margin-bottom: 15px; }
     .table-card-header { background: #1a4fa0; color: white; padding: 13px 18px; font-size: 1.05em; font-weight: 700; }
     .table-card .table-scroll { border: none; border-radius: 0; height: 420px; }
@@ -203,16 +198,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     /* Mobile */
     @media (max-width: 768px) {
-        .pb-top-layout { grid-template-columns: 1fr 1fr !important; }
-        .pb-top-layout .schedule-summary { grid-column: 1 / -1; }
-        .pb-top-layout .farm-vars-card { grid-column: 1 / -1; }
+        .pb-top-layout { grid-template-columns: 1fr !important; }
+        .pb-top-layout > * { grid-column: 1 / -1; }
+        .settings-card-inner { grid-template-columns: 1fr !important; }
         .pb-mid-layout { grid-template-columns: 1fr !important; }
         .table-scroll { height: 260px; }
         .dosatron-grid { grid-template-columns: 1fr !important; }
         .title-row { flex-direction: column; align-items: stretch; gap: 10px; }
         .method-inline { justify-content: space-between; }
         .method-inline select { flex: 1; min-width: 0; }
-        .period-fields { grid-template-columns: 1fr !important; }
     }
 
     /* ── Watermark ── */
@@ -258,66 +252,56 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <div class="pb-top-layout">
+    <!-- Card 1: Quick Action Schedule -->
     <div class="res-card schedule-summary">
-        <h4>Quick Action Schedule (Days)</h4>
+        <h4>📅 Quick Action Schedule</h4>
         <div id="resPbSchedule" style="line-height:1.8; margin-bottom: 10px;">-</div>
-        <p id="quickActionText" style="font-size:0.75em; color:#d32f2f; font-weight:bold; margin-top:10px; line-height:1.6; background:#fff3f3; padding:10px; border-radius:6px; border: 1px solid #ffcdd2;">
-            * Please add <strong style="font-size:1.25em;">-</strong> of ProBe-Bac WE on the dates indicated above.
-        </p>
-    </div>
-
-    <div class="res-card we-total">
-        <h4 id="resPbTotalTitle" style="text-align: center; border-bottom: none; margin-bottom: 5px; color: #333; font-size: 0.95em;">Full Period Dosage</h4>
-        <div style="font-size: 3em; font-weight: 900; color: #28a745; margin-top: 5px; line-height: 1;">
-            <span id="resPbTotal">-</span><span id="resPbUnit" style="font-size: 0.4em; color: #555; margin-left: 5px;">kg</span>
-        </div>
-        <div id="resPbTotalUnits" style="font-size: 1.05em; color: #007bff; font-weight: bold; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #ccc; width: 80%;">
+        <div id="quickActionText" style="font-size:0.84em; color:#1a4fa0; font-weight:600; margin-top:10px; line-height:1.65; background:#f0f4ff; padding:10px; border-radius:6px; border: 1px solid #d0dcff;">
             -
         </div>
     </div>
 
-    <div class="res-card pkg-settings">
-        <h4>Package Settings</h4>
-        <div class="field-box">
-            <label>Unit Name:</label>
-            <input type="text" id="pbPkgName" value="bag" oninput="calcPB()">
+    <!-- Card 2: Selected Period Dosage -->
+    <div class="res-card we-total">
+        <h4 style="text-align: center; border-bottom: none; margin-bottom: 5px; color: #333; font-size: 0.92em;">📋 Selected Period Dosage</h4>
+        <div style="font-size: 2.8em; font-weight: 900; color: #28a745; margin-top: 5px; line-height: 1;">
+            <span id="resPbTotal">-</span><span id="resPbUnit" style="font-size: 0.4em; color: #555; margin-left: 5px;">g</span>
         </div>
-        <div class="field-box">
-            <label>Grams / Unit (g):</label>
-            <input type="text" inputmode="decimal" id="pbPkgGrams" value="1,000" oninput="formatNum(this); calcPB()">
-        </div>
-        <div class="field-box" style="margin-top: 15px;">
-            <label class="toggle-switch">
-                <input type="checkbox" id="pbDispUnitToggle" onchange="calcPB()">
-                <span style="font-weight:bold; color:#d32f2f; font-size: 0.95em;">Display in Units</span>
-            </label>
+        <div id="resPbTotalUnits" style="font-size: 1.0em; color: #007bff; font-weight: bold; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #ccc; width: 85%;">
+            -
         </div>
     </div>
 
-    <div class="res-card farm-vars-card">
-        <h4 style="color:#e65100;">Farm Variables</h4>
-        <div class="farm-vars-inner">
-            <div class="field-box">
-                <label>Breed:</label>
-                <select id="pbBreed" onchange="calcPB()">
-                    <option value="cobb500">Cobb 500</option>
-                    <option value="ross308">Ross 308</option>
-                </select>
+    <!-- Card 3: Farm & Application Settings (merged) -->
+    <div class="res-card settings-card">
+        <h4 style="color:#1a4fa0;">⚙️ Farm &amp; Application Settings</h4>
+        <div class="settings-card-inner">
+            <!-- Left: Farm Info -->
+            <div>
+                <div class="settings-col-title">Farm Info</div>
+                <div class="field-box">
+                    <label>Breed:</label>
+                    <select id="pbBreed" onchange="calcPB()">
+                        <option value="cobb500">Cobb 500</option>
+                        <option value="ross308">Ross 308</option>
+                    </select>
+                </div>
+                <div class="field-box">
+                    <label>Marketed Days:</label>
+                    <input type="text" inputmode="decimal" id="pbDays" value="35" oninput="formatNum(this); calcPB()">
+                </div>
+                <div class="field-box">
+                    <label>No. of Birds:</label>
+                    <input type="text" inputmode="decimal" id="pbBirds" value="20,000" oninput="formatNum(this); calcPB()">
+                </div>
+                <div class="field-box">
+                    <label>Water:Feed Ratio:</label>
+                    <input type="text" inputmode="decimal" id="pbWFRatio" value="2" oninput="calcPB()">
+                </div>
             </div>
-            <div class="field-box">
-                <label>Marketed Days:</label>
-                <input type="text" inputmode="decimal" id="pbDays" value="35" oninput="formatNum(this); calcPB()">
-            </div>
-            <div class="field-box">
-                <label>No. of Birds:</label>
-                <input type="text" inputmode="decimal" id="pbBirds" value="20,000" oninput="formatNum(this); calcPB()">
-            </div>
-            <div class="field-box">
-                <label>Water:Feed Ratio:</label>
-                <input type="text" inputmode="decimal" id="pbWFRatio" value="2" oninput="calcPB()">
-            </div>
-            <div class="method-hint" id="pbMethodHint">Water Tank mode calculates ProBe-Bac WE requirement only for the selected application period.</div>
-            <div class="period-fields" id="pbPeriodFields">
+            <!-- Right: Application Settings -->
+            <div>
+                <div class="settings-col-title">Application Settings</div>
                 <div class="field-box">
                     <label>Application Start Day:</label>
                     <input type="text" inputmode="decimal" id="pbStartDay" value="1" oninput="formatNum(this); calcPB()">
@@ -326,15 +310,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <label>Application End Day:</label>
                     <input type="text" inputmode="decimal" id="pbEndDay" value="8" oninput="formatNum(this); calcPB()">
                 </div>
+                <div class="field-box" id="pbTankField">
+                    <label>Water Tank Vol. (L):</label>
+                    <input type="text" inputmode="decimal" id="pbTank" value="1,000" oninput="formatNum(this); calcPB()">
+                </div>
+                <div class="field-box" id="pbPpmField">
+                    <label>WE Concentration (ppm):</label>
+                    <input type="text" inputmode="decimal" id="pbPpm" value="50" oninput="formatNum(this); calcPB()">
+                </div>
+                <div class="field-box">
+                    <label>Unit Name:</label>
+                    <input type="text" id="pbPkgName" value="bag" oninput="calcPB()">
+                </div>
+                <div class="field-box">
+                    <label>g / Unit:</label>
+                    <input type="text" inputmode="decimal" id="pbPkgGrams" value="1,000" oninput="formatNum(this); calcPB()">
+                </div>
+                <div class="field-box">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="pbDispUnitToggle" onchange="calcPB()">
+                        <span style="font-weight:bold; color:#d32f2f; font-size: 0.9em;">Display in Units</span>
+                    </label>
+                </div>
             </div>
-            <div class="field-box" id="pbTankField">
-                <label>Water Tank Vol. (L):</label>
-                <input type="text" inputmode="decimal" id="pbTank" value="1,000" oninput="formatNum(this); calcPB()">
-            </div>
-            <div class="field-box" id="pbPpmField">
-                <label>WE Concentration in Drinking Water (ppm):</label>
-                <input type="text" inputmode="decimal" id="pbPpm" value="50" oninput="formatNum(this); calcPB()">
-            </div>
+            <!-- Bottom note (full width) -->
+            <div class="settings-info-note" id="pbMethodHint">ⓘ Based on Water Tank mode</div>
         </div>
     </div>
 </div>
@@ -407,11 +407,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <thead>
                 <tr>
                     <th id="pbThDay">Day</th>
-                    <th id="pbThFeed">Feed<br>(g/head)</th>
-                    <th id="pbThWater">Daily Water Use<br>(L/House)</th>
-                    <th id="pbThStock">Stock Use<br>(L/day)</th>
-                    <th id="pbThRemain">Tank Remain<br>(L)</th>
-                    <th id="pbThAction">Action Guide<br>(When Tank Empty)</th>
+                    <th id="pbThFeed">Feed<br>(kg)</th>
+                    <th id="pbThWater">Daily Water Use<br>(L)</th>
+                    <th id="pbThStock">Tank Refill<br>(L)</th>
+                    <th id="pbThRemain">WE Required<br>(g)</th>
+                    <th id="pbThAction">Action Guide</th>
                 </tr>
             </thead>
             <tbody id="pbTableBody"></tbody>
@@ -605,24 +605,20 @@ function calcPB() {
     const isDosatron = method === 'dosatron';
     const fmt0 = (value) => Math.round(value).toLocaleString('en-US');
     const fmtPct = (value) => value.toLocaleString('en-US', {maximumFractionDigits: 2});
+
     document.getElementById('pbMidLayout').style.display = isDosatron ? 'grid' : 'none';
     document.getElementById('pbTankField').style.display = isDosatron ? 'none' : 'block';
     document.getElementById('pbPpmField').style.display = isDosatron ? 'none' : 'block';
-    document.getElementById('pbPeriodFields').style.display = 'grid';
     document.getElementById('pbTimedFields').style.display = isDosatron && operationMode === 'timed' ? 'block' : 'none';
     document.getElementById('pbTimedWarning').style.display = isDosatron && operationMode === 'timed' ? 'block' : 'none';
     document.getElementById('dosatronNote').style.display = isDosatron ? 'inline' : 'none';
     document.getElementById('pbMethodHint').innerText = isDosatron
-        ? `Dosatron mode calculates stock solution concentration, stock tank refill timing, and total WE usage only for the selected application period, Day ${startDay}~${endDay}.`
-        : `Water Tank mode calculates ProBe-Bac WE requirement only for the selected application period, Day ${startDay}~${endDay}.`;
-    document.getElementById('resPbTotalTitle').innerText = 'Selected Period Dosage';
+        ? `ⓘ Dosatron mode: stock solution for Day ${startDay}~${endDay}. Set injector and prepare stock per schedule.`
+        : `ⓘ Based on Water Tank mode — WE added at each tank refill during Day ${startDay}~${endDay}.`;
 
-    document.getElementById('pbThFeed').innerHTML = 'Feed<br>(g/head)';
-    document.getElementById('pbThWater').innerHTML = 'Daily Water Use<br>(L/House)';
-    document.getElementById('pbThStock').style.display = isDosatron ? '' : 'none';
-    document.getElementById('pbThStock').innerHTML = 'Stock Use<br>(L/day)';
-    document.getElementById('pbThRemain').innerHTML = isDosatron ? 'Stock Tank Remain<br>(L)' : 'Tank Remain<br>(L)';
-    document.getElementById('pbThAction').innerHTML = isDosatron ? 'Action Guide<br>(Stock Empty)' : 'Action Guide<br>(When Tank Empty)';
+    document.getElementById('pbThStock').innerHTML = isDosatron ? 'Stock Use<br>(L/day)' : 'Tank Refill<br>(L)';
+    document.getElementById('pbThRemain').innerHTML = isDosatron ? 'Stock Tank Remain<br>(L)' : 'WE Required<br>(g)';
+    document.getElementById('pbThAction').innerHTML = isDosatron ? 'Action Guide<br>(Stock Empty)' : 'Action Guide';
 
     const body = document.getElementById('pbTableBody');
     body.innerHTML = '';
@@ -639,12 +635,14 @@ function calcPB() {
 
     for (let d = 1; d <= days && d <= 40; d++) {
         const feedIntakeHead = data[breed][d]?.dailyIntake || 0;
-        const waterIntakeHeadMl = feedIntakeHead * wfRatio;
-        const dailyHouseWaterL = (waterIntakeHeadMl * birds) / 1000;
+        const dailyHouseWaterL = (feedIntakeHead * wfRatio * birds) / 1000;
+        const feedKgTotal = (feedIntakeHead * birds) / 1000;
 
         let refillsToday = 0;
-        let actionGuide = `<span style="color:#bbb;">-</span>`;
-        let trClass = "";
+        let actionCell = '';
+        let col4Val = '';
+        let col5Val = '';
+        let trClass = '';
 
         if (isDosatron) {
             const isInPeriod = d >= startDay && d <= endDay;
@@ -657,6 +655,8 @@ function calcPB() {
                 }
                 currentRemain -= dailyStockUseL;
             }
+            col4Val = fmt0(dailyStockUseL);
+            col5Val = `<span style="color:#666;">${fmt0(currentRemain)}</span>`;
 
             if (refillsToday > 0 && isInPeriod) {
                 refillDays.push(d);
@@ -665,20 +665,11 @@ function calcPB() {
                 const stockGuide = showUnits && pkgGrams > 0
                     ? `${fmtPct(addWe / pkgGrams)} ${pkgName}`
                     : `${fmt0(addWe)}g`;
-                actionGuide = `<span class="guide-action">⚙️ Prepare stock: ${stockGuide} + ${fmt0(refillsToday * stockTankVol)}L water</span>`;
-                trClass = "refill-row";
+                actionCell = `<span class="guide-action">⚙️ Prepare stock: ${stockGuide} + ${fmt0(refillsToday * stockTankVol)}L water</span>`;
+                trClass = 'refill-row';
             } else if (!isInPeriod) {
-                actionGuide = `<span style="color:#aaa;">Not applied</span>`;
+                actionCell = `<span style="color:#ccc;">Not applied</span>`;
             }
-
-            body.innerHTML += `<tr class="${trClass}">
-                <td><strong>Day ${d}</strong></td>
-                <td>${fmt0(feedIntakeHead)}</td>
-                <td>${fmt0(dailyHouseWaterL)}</td>
-                <td>${fmt0(dailyStockUseL)}</td>
-                <td style="color:#666;">${fmt0(currentRemain)}</td>
-                <td>${actionGuide}</td>
-            </tr>`;
         } else {
             while (currentRemain < dailyHouseWaterL) {
                 refillsToday++;
@@ -687,47 +678,53 @@ function calcPB() {
             currentRemain -= dailyHouseWaterL;
 
             const isInPeriod = d >= startDay && d <= endDay;
+            const tankRefillL = refillsToday * tankVol;
+            const weRequired = (refillsToday > 0 && isInPeriod) ? refillsToday * wePerTank : 0;
+
+            col4Val = tankRefillL > 0 ? fmt0(tankRefillL) : `<span style="color:#ddd;">—</span>`;
+            col5Val = weRequired > 0 ? fmt0(weRequired) : `<span style="color:#ddd;">—</span>`;
+
             if (refillsToday > 0 && isInPeriod) {
                 refillDays.push(d);
-                const addWe = refillsToday * wePerTank;
-                totalG += addWe;
-                const guideText = showUnits && pkgGrams > 0
-                    ? `${fmtPct(addWe / pkgGrams)} ${pkgName}`
-                    : `${fmt0(addWe)}g`;
-                actionGuide = `<span class="guide-action">💧 <span style="font-size: 0.8em; font-weight: normal;">Add WE: </span>${guideText}</span>`;
-                trClass = "refill-row";
-            } else if (!isInPeriod) {
-                actionGuide = `<span style="color:#aaa;">Not applied</span>`;
+                totalG += weRequired;
+                const guideAmount = showUnits && pkgGrams > 0
+                    ? `${fmtPct(weRequired / pkgGrams)} ${pkgName}`
+                    : `${fmt0(weRequired)}g`;
+                actionCell = `<span class="action-guide-add">Add ${guideAmount} of ProBe-Bac WE when refilling the tank.</span>`;
+                trClass = 'refill-row';
+            } else if (isInPeriod) {
+                actionCell = `<span class="action-guide-maintain">Maintain the same concentration.</span>`;
+            } else {
+                actionCell = `<span class="action-guide-none">Not applied</span>`;
             }
-
-            body.innerHTML += `<tr class="${trClass}">
-                <td><strong>Day ${d}</strong></td>
-                <td>${fmt0(feedIntakeHead)}</td>
-                <td>${fmt0(dailyHouseWaterL)}</td>
-                <td style="display:none;">-</td>
-                <td style="color:#666;">${fmt0(currentRemain)}</td>
-                <td>${actionGuide}</td>
-            </tr>`;
         }
+
+        body.innerHTML += `<tr class="${trClass}">
+            <td><span class="day-badge-blue">Day ${d}</span></td>
+            <td>${fmt0(feedKgTotal)}</td>
+            <td>${fmt0(dailyHouseWaterL)}</td>
+            <td>${col4Val}</td>
+            <td>${col5Val}</td>
+            <td style="text-align:left; padding-left:10px;">${actionCell}</td>
+        </tr>`;
     }
 
     document.getElementById('resPbSchedule').innerHTML = formatDays(refillDays);
 
-    let quickText = "";
+    let quickText = '';
     if (isDosatron) {
         const stockBatchGuide = showUnits && pkgGrams > 0
             ? `${fmtPct(wePerStockTank / pkgGrams)} ${pkgName}(s)`
             : `${fmt0(wePerStockTank)}g`;
         const timedText = operationMode === 'timed'
-            ? ` Operate for ${fmtPct(operationHours)} hr/day, targeting ${fmtPct(operationSharePct)}% of daily water intake during operation.`
+            ? ` Operate for ${fmtPct(operationHours)} hr/day, targeting ${fmtPct(operationSharePct)}% of daily water intake.`
             : '';
-        quickText = `* Set Dosatron at <strong style="font-size:1.25em;">${fmtPct(dosatronRatePct)}%</strong>. Prepare stock solution at <strong style="font-size:1.25em;">${fmt0(stockConcGL)}g/L</strong>. Add <strong style="font-size:1.25em;">${stockBatchGuide}</strong> to ${fmt0(stockTankVol)}L stock tank.${timedText}`;
-        quickText = `* Application Period: <strong style="font-size:1.25em;">Day ${startDay}~${endDay}</strong>. ` + quickText.replace('* ', '');
+        quickText = `⚠ Day ${startDay}~${endDay}: Set Dosatron at <strong>${fmtPct(dosatronRatePct)}%</strong>. Add <strong>${stockBatchGuide}</strong> to ${fmt0(stockTankVol)}L stock tank (${fmt0(stockConcGL)} g/L).${timedText}`;
     } else {
         const oneTankGuide = showUnits && pkgGrams > 0
-            ? `${fmtPct(wePerTank / pkgGrams)} ${pkgName}(s)`
+            ? `${fmtPct(wePerTank / pkgGrams)} ${pkgName}`
             : `${fmt0(wePerTank)}g`;
-        quickText = `* Application Period: <strong style="font-size:1.25em;">Day ${startDay}~${endDay}</strong>. Please add <strong style="font-size:1.25em;">${oneTankGuide}</strong> of ProBe-Bac WE when the tank is refilled during the selected period.`;
+        quickText = `⚠ Day ${startDay}~${endDay}: Add <strong>${oneTankGuide}</strong> of ProBe-Bac WE at each tank refill.`;
     }
     document.getElementById('quickActionText').innerHTML = quickText;
 
@@ -737,16 +734,15 @@ function calcPB() {
         totalWeElem.innerText = fmt0(totalG);
         totalWeUnit.innerText = 'g';
     } else {
-        totalWeElem.innerText = fmt0(totalG / 1000);
+        totalWeElem.innerText = (totalG / 1000).toLocaleString('en-US', {maximumFractionDigits: 2});
         totalWeUnit.innerText = 'kg';
     }
 
     const totalUnitsElem = document.getElementById('resPbTotalUnits');
     if (pkgGrams > 0) {
-        let totalUnits = fmtPct(totalG / pkgGrams);
-        totalUnitsElem.innerText = `≈ ${totalUnits} ${pkgName}s Needed`;
+        totalUnitsElem.innerHTML = `≈ <strong>${fmtPct(totalG / pkgGrams)}</strong> ${pkgName}s needed`;
     } else {
-        totalUnitsElem.innerText = `-`;
+        totalUnitsElem.innerText = '—';
     }
 
     document.getElementById('resDosatronSetting').innerText = `${fmtPct(dosatronRatePct)}% (1:${fmt0(100 / dosatronRatePct)})`;
