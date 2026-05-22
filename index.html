@@ -118,6 +118,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .farm-vars-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px; }
     .farm-vars-inner .field-box { margin-bottom: 8px; }
     .farm-vars-inner .full-width { grid-column: 1 / -1; }
+    .farm-vars-inner .method-hint { margin-top: 0; align-self: start; }
+    .farm-vars-inner .period-fields { display: flex; flex-direction: column; gap: 0; margin-top: 0; padding-top: 0; border-top: none; align-self: start; }
     .pb-mid-layout { display: none; grid-template-columns: 1.5fr 1fr; gap: 15px; margin-bottom: 20px; }
 
     .table-scroll { height: 500px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; }
@@ -314,8 +316,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <label>Water:Feed Ratio:</label>
                 <input type="text" inputmode="decimal" id="pbWFRatio" value="2" oninput="calcPB()">
             </div>
-            <div class="method-hint full-width" id="pbMethodHint">Water Tank mode calculates ProBe-Bac WE requirement only for the selected application period.</div>
-            <div class="period-fields full-width" id="pbPeriodFields">
+            <div class="method-hint" id="pbMethodHint">Water Tank mode calculates ProBe-Bac WE requirement only for the selected application period.</div>
+            <div class="period-fields" id="pbPeriodFields">
                 <div class="field-box">
                     <label>Application Start Day:</label>
                     <input type="text" inputmode="decimal" id="pbStartDay" value="1" oninput="formatNum(this); calcPB()">
@@ -325,11 +327,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <input type="text" inputmode="decimal" id="pbEndDay" value="8" oninput="formatNum(this); calcPB()">
                 </div>
             </div>
-            <div class="field-box full-width" id="pbTankField">
+            <div class="field-box" id="pbTankField">
                 <label>Water Tank Vol. (L):</label>
                 <input type="text" inputmode="decimal" id="pbTank" value="1,000" oninput="formatNum(this); calcPB()">
             </div>
-            <div class="field-box full-width" id="pbPpmField">
+            <div class="field-box" id="pbPpmField">
                 <label>WE Concentration in Drinking Water (ppm):</label>
                 <input type="text" inputmode="decimal" id="pbPpm" value="50" oninput="formatNum(this); calcPB()">
             </div>
