@@ -114,7 +114,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     }
     .res-card.pkg-settings { border-left: 10px solid #17a2b8; background: #fff; }
 
-    .pb-top-layout { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+    .pb-top-layout { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 15px; margin-bottom: 20px; align-items: start; }
+    .farm-vars-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px; }
+    .farm-vars-inner .field-box { margin-bottom: 8px; }
+    .farm-vars-inner .full-width { grid-column: 1 / -1; }
     .pb-mid-layout { display: none; grid-template-columns: 1.5fr 1fr; gap: 15px; margin-bottom: 20px; }
 
     .table-scroll { height: 500px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; }
@@ -291,43 +294,45 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <div class="res-card farm-vars-card">
         <h4 style="color:#e65100;">Farm Variables</h4>
-        <div class="field-box">
-            <label>Breed:</label>
-            <select id="pbBreed" onchange="calcPB()">
-                <option value="cobb500">Cobb 500</option>
-                <option value="ross308">Ross 308</option>
-            </select>
-        </div>
-        <div class="field-box">
-            <label>Marketed Days:</label>
-            <input type="text" inputmode="decimal" id="pbDays" value="35" oninput="formatNum(this); calcPB()">
-        </div>
-        <div class="field-box">
-            <label>No. of Birds:</label>
-            <input type="text" inputmode="decimal" id="pbBirds" value="20,000" oninput="formatNum(this); calcPB()">
-        </div>
-        <div class="field-box">
-            <label>Water:Feed Ratio:</label>
-            <input type="text" inputmode="decimal" id="pbWFRatio" value="2" oninput="calcPB()">
-        </div>
-        <div class="method-hint" id="pbMethodHint">Water Tank mode calculates ProBe-Bac WE requirement only for the selected application period.</div>
-        <div class="period-fields" id="pbPeriodFields">
+        <div class="farm-vars-inner">
             <div class="field-box">
-                <label>Application Start Day:</label>
-                <input type="text" inputmode="decimal" id="pbStartDay" value="1" oninput="formatNum(this); calcPB()">
+                <label>Breed:</label>
+                <select id="pbBreed" onchange="calcPB()">
+                    <option value="cobb500">Cobb 500</option>
+                    <option value="ross308">Ross 308</option>
+                </select>
             </div>
             <div class="field-box">
-                <label>Application End Day:</label>
-                <input type="text" inputmode="decimal" id="pbEndDay" value="8" oninput="formatNum(this); calcPB()">
+                <label>Marketed Days:</label>
+                <input type="text" inputmode="decimal" id="pbDays" value="35" oninput="formatNum(this); calcPB()">
             </div>
-        </div>
-        <div class="field-box" id="pbTankField">
-            <label>Water Tank Vol. (L):</label>
-            <input type="text" inputmode="decimal" id="pbTank" value="1,000" oninput="formatNum(this); calcPB()">
-        </div>
-        <div class="field-box" id="pbPpmField">
-            <label>WE Concentration in Drinking Water (ppm):</label>
-            <input type="text" inputmode="decimal" id="pbPpm" value="50" oninput="formatNum(this); calcPB()">
+            <div class="field-box">
+                <label>No. of Birds:</label>
+                <input type="text" inputmode="decimal" id="pbBirds" value="20,000" oninput="formatNum(this); calcPB()">
+            </div>
+            <div class="field-box">
+                <label>Water:Feed Ratio:</label>
+                <input type="text" inputmode="decimal" id="pbWFRatio" value="2" oninput="calcPB()">
+            </div>
+            <div class="method-hint full-width" id="pbMethodHint">Water Tank mode calculates ProBe-Bac WE requirement only for the selected application period.</div>
+            <div class="period-fields full-width" id="pbPeriodFields">
+                <div class="field-box">
+                    <label>Application Start Day:</label>
+                    <input type="text" inputmode="decimal" id="pbStartDay" value="1" oninput="formatNum(this); calcPB()">
+                </div>
+                <div class="field-box">
+                    <label>Application End Day:</label>
+                    <input type="text" inputmode="decimal" id="pbEndDay" value="8" oninput="formatNum(this); calcPB()">
+                </div>
+            </div>
+            <div class="field-box full-width" id="pbTankField">
+                <label>Water Tank Vol. (L):</label>
+                <input type="text" inputmode="decimal" id="pbTank" value="1,000" oninput="formatNum(this); calcPB()">
+            </div>
+            <div class="field-box full-width" id="pbPpmField">
+                <label>WE Concentration in Drinking Water (ppm):</label>
+                <input type="text" inputmode="decimal" id="pbPpm" value="50" oninput="formatNum(this); calcPB()">
+            </div>
         </div>
     </div>
 </div>
