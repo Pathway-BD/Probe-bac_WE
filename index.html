@@ -116,7 +116,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     .pb-top-layout { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 15px; margin-bottom: 20px; }
     .pb-dual-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; grid-column: 2 / span 2; }
-    .pb-mid-layout { display: none; grid-template-columns: 1.5fr 1fr; gap: 15px; margin-bottom: 20px; }
     .pb-bottom-layout { display: grid; grid-template-columns: 1.8fr 1fr; gap: 15px; }
 
     .table-scroll { height: 500px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; }
@@ -154,10 +153,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         border: 1px solid #cfe7ff; border-radius: 6px; color: #335;
         font-size: 0.82em; line-height: 1.55;
     }
+    .period-fields {
+        margin-top: 10px; padding-top: 10px; border-top: 1px dashed #ffd8a8;
+        display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
     .dosatron-fields { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #ffd8a8; }
-    .dosatron-card { display: none; border-left: 10px solid #6f42c1; background: #fbf8ff; }
+    .dosatron-card { display: none; grid-column: 1 / span 2; border-left: 10px solid #6f42c1; background: #fbf8ff; }
     .dosatron-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .dosatron-metric-full { grid-column: 1 / -1; }
     .dosatron-metric {
         background: #fff; border: 1px solid #eadfff; border-radius: 8px;
         padding: 10px 12px; text-align: center;
@@ -204,6 +206,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         .title-row { flex-direction: column; align-items: stretch; gap: 10px; }
         .method-inline { justify-content: space-between; }
         .method-inline select { flex: 1; min-width: 0; }
+        .period-fields { grid-template-columns: 1fr !important; }
     }
 
     /* ── Watermark ── */
@@ -259,7 +262,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <div class="pb-dual-wrap">
         <div class="res-card we-total">
-            <h4 style="text-align: center; border-bottom: none; margin-bottom: 5px; color: #333; font-size: 0.95em;">Full Period Dosage</h4>
+            <h4 id="resPbTotalTitle" style="text-align: center; border-bottom: none; margin-bottom: 5px; color: #333; font-size: 0.95em;">Full Period Dosage</h4>
             <div style="font-size: 3em; font-weight: 900; color: #28a745; margin-top: 5px; line-height: 1;">
                 <span id="resPbTotal">-</span><span id="resPbUnit" style="font-size: 0.4em; color: #555; margin-left: 5px;">kg</span>
             </div>
@@ -286,68 +289,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
         </div>
 
-    </div>
-</div>
-
-<!-- Dosatron mid row: Guide + Inputs, shown only in Dosatron mode -->
-<div class="pb-mid-layout" id="pbMidLayout">
-    <div class="res-card dosatron-card" id="dosatronResultCard" style="display:block;">
-        <h4 style="color:#4b2791;">Dosatron Stock Solution Guide</h4>
-        <div class="dosatron-grid">
-            <div class="dosatron-metric">
-                <div class="metric-label">Dosatron Setting</div>
-                <div class="metric-val" id="resDosatronSetting">-</div>
-            </div>
-            <div class="dosatron-metric">
-                <div class="metric-label">Stock Concentration</div>
-                <div class="metric-val" id="resStockConc">-</div>
-            </div>
-            <div class="dosatron-metric">
-                <div class="metric-label">Adjusted Drinking ppm</div>
-                <div class="metric-val" id="resAdjustedPpm">-</div>
-            </div>
-            <div class="dosatron-metric">
-                <div class="metric-label">WE / Stock Tank</div>
-                <div class="metric-val" id="resStockBatch">-</div>
-            </div>
-            <div class="dosatron-metric dosatron-metric-full">
-                <div class="metric-label">Water Coverage</div>
-                <div class="metric-val" id="resStockCoverage">-</div>
-            </div>
-        </div>
-    </div>
-    <div class="input-group" style="background:#f5f0ff; border-color:#d8c7ff;">
-        <div class="method-hint" id="pbMethodHintMid" style="margin-top:0; background:#ede8ff; border-color:#c4aeff;"></div>
-        <div id="pbDosatronFieldsMid">
-            <div class="field-box" style="margin-top:8px;">
-                <label>Dosatron Injection Rate (%):</label>
-                <input type="text" inputmode="decimal" id="pbDosatronRateMid" value="1" oninput="syncDosatron('Rate',this); formatNum(this); calcPB()">
-            </div>
-            <div class="field-box">
-                <label>Stock Solution Tank Vol. (L):</label>
-                <input type="text" inputmode="decimal" id="pbStockTankMid" value="100" oninput="syncDosatron('StockTank',this); formatNum(this); calcPB()">
-            </div>
-            <div class="field-box">
-                <label>Dosatron Operation:</label>
-                <select id="pbOperationModeMid" onchange="syncDosatronSelect('OperationMode',this); calcPB()">
-                    <option value="continuous" selected>All day</option>
-                    <option value="timed">Timed operation</option>
-                </select>
-            </div>
-            <div class="timed-fields" id="pbTimedFieldsMid">
-                <div class="field-box">
-                    <label>Operation Hours / Day:</label>
-                    <input type="text" inputmode="decimal" id="pbOperationHoursMid" value="6" oninput="syncDosatron('OperationHours',this); formatNum(this); calcPB()">
+        <div class="res-card dosatron-card" id="dosatronResultCard">
+            <h4 style="color:#4b2791;">Dosatron Stock Solution Guide</h4>
+            <div class="dosatron-grid">
+                <div class="dosatron-metric">
+                    <div class="metric-label">Dosatron Setting</div>
+                    <div class="metric-val" id="resDosatronSetting">-</div>
                 </div>
-                <div class="field-box">
-                    <label>Water Intake During Operation (%):</label>
-                    <input type="text" inputmode="decimal" id="pbOperationShareMid" value="25" oninput="syncDosatron('OperationShare',this); formatNum(this); calcPB()">
+                <div class="dosatron-metric">
+                    <div class="metric-label">Stock Concentration</div>
+                    <div class="metric-val" id="resStockConc">-</div>
                 </div>
-                <div class="timed-warning" id="pbTimedWarningMid" style="display:none;">Timed operation increases the required drinking-water concentration during the operating window. Confirm actual water intake pattern and Dosatron calibration before field use.</div>
-            </div>
-            <div class="field-box">
-                <label>WE Concentration in Drinking Water (ppm):</label>
-                <input type="text" inputmode="decimal" id="pbPpmMid" value="50" oninput="syncDosatron('Ppm',this); calcPB()">
+                <div class="dosatron-metric">
+                    <div class="metric-label">Adjusted Drinking ppm</div>
+                    <div class="metric-val" id="resAdjustedPpm">-</div>
+                </div>
+                <div class="dosatron-metric">
+                    <div class="metric-label">WE / Stock Tank</div>
+                    <div class="metric-val" id="resStockBatch">-</div>
+                </div>
+                <div class="dosatron-metric">
+                    <div class="metric-label">Water Coverage</div>
+                    <div class="metric-val" id="resStockCoverage">-</div>
+                </div>
             </div>
         </div>
     </div>
@@ -394,6 +358,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <input type="text" inputmode="decimal" id="pbWFRatio" value="2" oninput="calcPB()">
             </div>
             <div class="method-hint" id="pbMethodHint">Water Tank mode calculates how much ProBe-Bac WE to add whenever the tank is refilled.</div>
+            <div class="period-fields" id="pbPeriodFields">
+                <div class="field-box">
+                    <label>Application Start Day:</label>
+                    <input type="text" inputmode="decimal" id="pbStartDay" value="1" oninput="formatNum(this); calcPB()">
+                </div>
+                <div class="field-box">
+                    <label>Application End Day:</label>
+                    <input type="text" inputmode="decimal" id="pbEndDay" value="8" oninput="formatNum(this); calcPB()">
+                </div>
+            </div>
             <div class="field-box" id="pbTankField">
                 <label>Water Tank Vol. (L):</label>
                 <input type="text" inputmode="decimal" id="pbTank" value="1,000" oninput="formatNum(this); calcPB()">
@@ -566,16 +540,6 @@ function getVal(id, def = 0) {
     return isNaN(num) ? def : num;
 }
 
-// Sync Mid fields ↔ original hidden fields (so calcPB reads correctly)
-function syncDosatron(field, el) {
-    const orig = document.getElementById('pb' + field);
-    if (orig) orig.value = el.value;
-}
-function syncDosatronSelect(field, el) {
-    const orig = document.getElementById('pb' + field);
-    if (orig) orig.value = el.value;
-}
-
 function formatDays(days) {
     if (!days || days.length === 0) return "No refills required.";
     let ranges = [];
@@ -603,44 +567,36 @@ function calcPB() {
     const days = getVal('pbDays', 35);
     const birds = getVal('pbBirds', 20000);
     const wfRatio = getVal('pbWFRatio', 2);
+    const ppm = getVal('pbPpm', 50);
     const method = document.getElementById('pbMethod')?.value || 'tank';
-    const isDosatron = method === 'dosatron';
-
-    // For dosatron, read from Mid fields; for tank, read from original fields
-    const ppm = isDosatron ? getVal('pbPpmMid', 50) : getVal('pbPpm', 50);
     const tankVol = Math.max(getVal('pbTank', 1000), 10);
-    const dosatronRatePct = Math.max(getVal('pbDosatronRateMid', 1), 0.01);
+    const dosatronRatePct = Math.max(getVal('pbDosatronRate', 1), 0.01);
     const dosatronRate = dosatronRatePct / 100;
-    const stockTankVol = Math.max(getVal('pbStockTankMid', 100), 1);
-    const operationMode = document.getElementById('pbOperationModeMid')?.value || 'continuous';
-    const operationHours = Math.min(Math.max(getVal('pbOperationHoursMid', 6), 0.1), 24);
-    const operationSharePct = Math.min(Math.max(getVal('pbOperationShareMid', (operationHours / 24) * 100), 0.1), 100);
+    const stockTankVol = Math.max(getVal('pbStockTank', 100), 1);
+    const operationMode = document.getElementById('pbOperationMode')?.value || 'continuous';
+    const operationHours = Math.min(Math.max(getVal('pbOperationHours', 6), 0.1), 24);
+    const operationSharePct = Math.min(Math.max(getVal('pbOperationShare', (operationHours / 24) * 100), 0.1), 100);
     const operationShare = operationMode === 'timed' ? operationSharePct / 100 : 1;
+    const startDay = Math.max(1, Math.round(getVal('pbStartDay', 1)));
+    const endDay = Math.min(Math.round(getVal('pbEndDay', 8)), days, 40);
     const pkgName = document.getElementById('pbPkgName').value || 'Unit';
     const pkgGrams = getVal('pbPkgGrams', 500);
     const showUnits = document.getElementById('pbDispUnitToggle').checked;
 
+    const isDosatron = method === 'dosatron';
     const fmt0 = (value) => Math.round(value).toLocaleString('en-US');
     const fmtPct = (value) => value.toLocaleString('en-US', {maximumFractionDigits: 2});
-
-    // Show/hide mid layout row (Dosatron mode only)
-    document.getElementById('pbMidLayout').style.display = isDosatron ? 'grid' : 'none';
-
-    // Farm Variables panel: hide dosatron fields (they live in mid layout now)
     document.getElementById('pbTankField').style.display = isDosatron ? 'none' : 'block';
-    document.getElementById('pbDosatronFields').style.display = 'none';
-
-    // Mid layout timed fields
-    if (isDosatron) {
-        document.getElementById('pbTimedFieldsMid').style.display = operationMode === 'timed' ? 'block' : 'none';
-        document.getElementById('pbTimedWarningMid').style.display = operationMode === 'timed' ? 'block' : 'none';
-    }
-
+    document.getElementById('pbPeriodFields').style.display = 'grid';
+    document.getElementById('pbDosatronFields').style.display = isDosatron ? 'block' : 'none';
+    document.getElementById('pbTimedFields').style.display = isDosatron && operationMode === 'timed' ? 'block' : 'none';
+    document.getElementById('pbTimedWarning').style.display = isDosatron && operationMode === 'timed' ? 'block' : 'none';
+    document.getElementById('dosatronResultCard').style.display = isDosatron ? 'block' : 'none';
     document.getElementById('dosatronNote').style.display = isDosatron ? 'inline' : 'none';
     document.getElementById('pbMethodHint').innerText = isDosatron
-        ? 'Dosatron mode calculates stock solution concentration, stock tank refill timing, and total WE usage.'
-        : 'Water Tank mode calculates how much ProBe-Bac WE to add whenever the tank is refilled.';
-    document.getElementById('pbMethodHintMid').innerText = 'Dosatron mode calculates stock solution concentration, stock tank refill timing, and total WE usage.';
+        ? `Dosatron mode calculates stock solution concentration, stock tank refill timing, and total WE usage only for the selected application period, Day ${startDay}~${endDay}.`
+        : `Water Tank mode calculates ProBe-Bac WE requirement only for the selected application period, Day ${startDay}~${endDay}.`;
+    document.getElementById('resPbTotalTitle').innerText = 'Selected Period Dosage';
 
     document.getElementById('pbThFeed').innerHTML = 'Feed<br>(g/head)';
     document.getElementById('pbThWater').innerHTML = 'Daily Water Use<br>(L/House)';
@@ -672,15 +628,18 @@ function calcPB() {
         let trClass = "";
 
         if (isDosatron) {
-            const dailyTreatedWaterL = dailyHouseWaterL * operationShare;
+            const isInPeriod = d >= startDay && d <= endDay;
+            const dailyTreatedWaterL = isInPeriod ? dailyHouseWaterL * operationShare : 0;
             const dailyStockUseL = dailyTreatedWaterL * dosatronRate;
-            while (currentRemain < dailyStockUseL) {
-                refillsToday++;
-                currentRemain += stockTankVol;
+            if (isInPeriod) {
+                while (currentRemain < dailyStockUseL) {
+                    refillsToday++;
+                    currentRemain += stockTankVol;
+                }
+                currentRemain -= dailyStockUseL;
             }
-            currentRemain -= dailyStockUseL;
 
-            if (refillsToday > 0) {
+            if (refillsToday > 0 && isInPeriod) {
                 refillDays.push(d);
                 const addWe = refillsToday * wePerStockTank;
                 totalG += addWe;
@@ -689,6 +648,8 @@ function calcPB() {
                     : `${fmt0(addWe)}g`;
                 actionGuide = `<span class="guide-action">⚙️ Prepare stock: ${stockGuide} + ${fmt0(refillsToday * stockTankVol)}L water</span>`;
                 trClass = "refill-row";
+            } else if (!isInPeriod) {
+                actionGuide = `<span style="color:#aaa;">Not applied</span>`;
             }
 
             body.innerHTML += `<tr class="${trClass}">
@@ -706,7 +667,8 @@ function calcPB() {
             }
             currentRemain -= dailyHouseWaterL;
 
-            if (refillsToday > 0) {
+            const isInPeriod = d >= startDay && d <= endDay;
+            if (refillsToday > 0 && isInPeriod) {
                 refillDays.push(d);
                 const addWe = refillsToday * wePerTank;
                 totalG += addWe;
@@ -715,6 +677,8 @@ function calcPB() {
                     : `${fmt0(addWe)}g`;
                 actionGuide = `<span class="guide-action">💧 <span style="font-size: 0.8em; font-weight: normal;">Add WE: </span>${guideText}</span>`;
                 trClass = "refill-row";
+            } else if (!isInPeriod) {
+                actionGuide = `<span style="color:#aaa;">Not applied</span>`;
             }
 
             body.innerHTML += `<tr class="${trClass}">
@@ -739,11 +703,12 @@ function calcPB() {
             ? ` Operate for ${fmtPct(operationHours)} hr/day, targeting ${fmtPct(operationSharePct)}% of daily water intake during operation.`
             : '';
         quickText = `* Set Dosatron at <strong style="font-size:1.25em;">${fmtPct(dosatronRatePct)}%</strong>. Prepare stock solution at <strong style="font-size:1.25em;">${fmt0(stockConcGL)}g/L</strong>. Add <strong style="font-size:1.25em;">${stockBatchGuide}</strong> to ${fmt0(stockTankVol)}L stock tank.${timedText}`;
+        quickText = `* Application Period: <strong style="font-size:1.25em;">Day ${startDay}~${endDay}</strong>. ` + quickText.replace('* ', '');
     } else {
         const oneTankGuide = showUnits && pkgGrams > 0
             ? `${fmtPct(wePerTank / pkgGrams)} ${pkgName}(s)`
             : `${fmt0(wePerTank)}g`;
-        quickText = `* Please add <strong style="font-size:1.25em;">${oneTankGuide}</strong> of ProBe-Bac WE on the dates indicated above.`;
+        quickText = `* Application Period: <strong style="font-size:1.25em;">Day ${startDay}~${endDay}</strong>. Please add <strong style="font-size:1.25em;">${oneTankGuide}</strong> of ProBe-Bac WE when the tank is refilled during the selected period.`;
     }
     document.getElementById('quickActionText').innerHTML = quickText;
 
