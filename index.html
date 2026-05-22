@@ -219,6 +219,194 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     @media (max-width: 768px) {
         .watermark { bottom: 200px; }
     }
+
+    /* ────────────────────────────────────────
+       DOSATRON GUIDE LAYOUT
+    ──────────────────────────────────────── */
+    .dosatron-guide-wrap {
+        display: grid;
+        grid-template-columns: 60% 1fr;
+        gap: 18px;
+        margin-bottom: 18px;
+        align-items: start;
+    }
+    .dg-left { display: flex; flex-direction: column; gap: 14px; }
+
+    /* Action Card */
+    .dg-action-card {
+        background: #fff;
+        border: 2px solid #e65100;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(230,81,0,0.1);
+    }
+    .dg-action-header {
+        background: #e65100;
+        color: #fff;
+        padding: 7px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .dg-action-label { font-size: 0.75em; font-weight: 800; letter-spacing: 1.5px; }
+    .dg-period-badge {
+        background: rgba(255,255,255,0.22);
+        border: 1px solid rgba(255,255,255,0.55);
+        border-radius: 20px;
+        padding: 2px 12px;
+        font-size: 0.82em;
+        font-weight: 700;
+    }
+    .dg-action-body { padding: 14px 18px 16px; }
+    .dg-action-headline {
+        font-size: 2.2em;
+        font-weight: 900;
+        color: #1a1a1a;
+        line-height: 1.15;
+        margin-bottom: 5px;
+    }
+    .dg-accent { color: #e65100; }
+    .dg-action-sub { font-size: 0.95em; font-weight: 600; color: #444; margin-bottom: 14px; }
+
+    /* Chips */
+    .dg-chips {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+    .dg-chip {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 10px 6px;
+        text-align: center;
+        background: #fafafa;
+    }
+    .dg-chip-icon { font-size: 1.2em; display: block; margin-bottom: 3px; }
+    .dg-chip-label { font-size: 0.65em; color: #888; display: block; margin-bottom: 3px; line-height: 1.3; }
+    .dg-chip-val { font-size: 1.25em; font-weight: 900; color: #e65100; display: block; }
+    .dg-chip-sub { font-size: 0.6em; color: #aaa; display: block; }
+
+    /* Warning bar */
+    .dg-warning {
+        padding: 9px 13px;
+        background: #fff8f0;
+        border: 1px solid #ffcc80;
+        border-radius: 7px;
+        font-size: 0.8em;
+        color: #7a4a00;
+        line-height: 1.5;
+    }
+
+    /* Steps card */
+    .dg-steps-card, .dg-kpi-card {
+        background: #fff;
+        border: 1px solid #dde3ee;
+        border-radius: 12px;
+        padding: 14px 18px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .dg-section-title {
+        font-size: 0.8em;
+        font-weight: 800;
+        color: #1e3a7a;
+        letter-spacing: 0.8px;
+        margin-bottom: 12px;
+        padding-bottom: 7px;
+        border-bottom: 1px solid #e5eaf3;
+    }
+    .dg-steps { display: flex; align-items: flex-start; gap: 6px; }
+    .dg-step { flex: 1; text-align: center; }
+    .dg-step-num {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 26px; height: 26px;
+        background: #4b2791; color: #fff;
+        border-radius: 50%;
+        font-size: 0.8em; font-weight: 800;
+        margin-bottom: 7px;
+    }
+    .dg-step-icon { font-size: 1.8em; display: block; margin-bottom: 5px; }
+    .dg-step-name { font-size: 0.82em; font-weight: 700; color: #222; margin-bottom: 3px; }
+    .dg-step-desc { font-size: 0.72em; color: #666; line-height: 1.45; }
+    .dg-step-arrow { font-size: 1.3em; color: #bbb; padding-top: 28px; flex-shrink: 0; }
+
+    /* KPI row */
+    .dg-kpi-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        margin-bottom: 8px;
+    }
+    .dg-kpi {
+        text-align: center;
+        padding: 10px 6px;
+        background: #f7f9fc;
+        border-radius: 8px;
+        border: 1px solid #e5eaf3;
+    }
+    .dg-kpi-icon { font-size: 1.2em; margin-bottom: 3px; }
+    .dg-kpi-label { font-size: 0.65em; color: #888; margin-bottom: 4px; line-height: 1.3; }
+    .dg-kpi-val { font-size: 1.05em; font-weight: 900; color: #1e3a7a; }
+    .dg-kpi-note { font-size: 0.72em; color: #888; }
+
+    /* Settings panel */
+    .dg-settings-panel {
+        background: #fff;
+        border: 1.5px solid #2d8a4e;
+        border-radius: 12px;
+        overflow: hidden;
+        position: sticky;
+        top: 14px;
+        box-shadow: 0 2px 8px rgba(45,138,78,0.08);
+    }
+    .dg-settings-header {
+        background: #fff;
+        border-bottom: 1px solid #c3e6cb;
+        padding: 11px 16px;
+        font-size: 0.88em;
+        font-weight: 800;
+        color: #2d8a4e;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
+    .dg-settings-body { padding: 14px 14px 10px; }
+    .dg-settings-group { margin-bottom: 13px; }
+    .dg-settings-group-title {
+        font-size: 0.78em;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 8px;
+        padding-bottom: 4px;
+        border-bottom: 1px solid #eee;
+    }
+    .dg-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+    .dg-settings-panel .field-box { margin-bottom: 7px; }
+    .dg-settings-panel .field-box label { font-size: 0.78em; }
+    .dg-settings-panel .field-box input,
+    .dg-settings-panel .field-box select { font-size: 13px; padding: 6px 8px; }
+    .dg-settings-hint {
+        background: #f0fff4;
+        border: 1px solid #c3e6cb;
+        border-radius: 6px;
+        padding: 7px 10px;
+        font-size: 0.73em;
+        color: #2d8a4e;
+        margin-top: 6px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    @media (max-width: 768px) {
+        .dosatron-guide-wrap { grid-template-columns: 1fr !important; }
+        .dg-chips { grid-template-columns: repeat(2, 1fr) !important; }
+        .dg-kpi-row { grid-template-columns: repeat(2, 1fr) !important; }
+        .dg-step-arrow { display: none; }
+        .dg-steps { flex-wrap: wrap; }
+        .dg-step { min-width: 45%; }
+        .dg-form-grid { grid-template-columns: 1fr 1fr !important; }
+    }
 </style>
 </head>
 <body>
@@ -252,7 +440,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 </div>
 
-<div class="pb-top-layout">
+<div class="pb-top-layout" id="pbTopLayout">
     <div class="res-card schedule-summary">
         <h4>Quick Action Schedule (Days)</h4>
         <div id="resPbSchedule" style="line-height:1.8; margin-bottom: 10px;">-</div>
@@ -392,6 +580,228 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
     </div>
 </div>
+
+<!-- ── DOSATRON APPLICATION GUIDE (shown in Dosatron mode) ── -->
+<div id="dosatronGuideWrap" class="dosatron-guide-wrap" style="display:none;">
+
+    <!-- LEFT: Action Panel + Steps + Key Values -->
+    <div class="dg-left">
+
+        <!-- Action Card -->
+        <div class="dg-action-card">
+            <div class="dg-action-header">
+                <span class="dg-action-label">TODAY'S ACTION</span>
+                <span class="dg-period-badge" id="dgPeriodBadge">Day 1–8</span>
+            </div>
+            <div class="dg-action-body">
+                <div class="dg-action-headline">
+                    Add <span class="dg-accent" id="dgWeAmount">–</span> to <span class="dg-accent" id="dgStockVolDisplay">–</span> L
+                </div>
+                <div class="dg-action-sub">stock tank and operate Dosatron as below.</div>
+                <div class="dg-chips">
+                    <div class="dg-chip">
+                        <span class="dg-chip-icon">⚙️</span>
+                        <span class="dg-chip-label">Dosatron Setting</span>
+                        <span class="dg-chip-val" id="dgChipRate">–</span>
+                        <span class="dg-chip-sub" id="dgChipRateSub"></span>
+                    </div>
+                    <div class="dg-chip">
+                        <span class="dg-chip-icon">⏱️</span>
+                        <span class="dg-chip-label">Operation Time</span>
+                        <span class="dg-chip-val" id="dgChipOpTime">–</span>
+                    </div>
+                    <div class="dg-chip">
+                        <span class="dg-chip-icon">💧</span>
+                        <span class="dg-chip-label">Target Water Intake</span>
+                        <span class="dg-chip-val" id="dgChipWater">–</span>
+                        <span class="dg-chip-sub">of daily intake</span>
+                    </div>
+                    <div class="dg-chip">
+                        <span class="dg-chip-icon">📦</span>
+                        <span class="dg-chip-label">Bags Needed</span>
+                        <span class="dg-chip-val" id="dgChipBags">–</span>
+                    </div>
+                </div>
+                <div class="dg-warning" id="dgWarningBar" style="display:none;">
+                    ⚠️ Operate for <span id="dgWarnHours">–</span> hr/day, targeting <span id="dgWarnShare">–</span>% of daily water intake during the operation period.
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Step Guide -->
+        <div class="dg-steps-card">
+            <div class="dg-section-title">QUICK STEP GUIDE</div>
+            <div class="dg-steps">
+                <div class="dg-step">
+                    <div class="dg-step-num">1</div>
+                    <div class="dg-step-icon">🪣</div>
+                    <div class="dg-step-name">Fill Stock Tank</div>
+                    <div class="dg-step-desc">Fill tank with clean water up to <span id="dgStepVol">–</span> L.</div>
+                </div>
+                <div class="dg-step-arrow">→</div>
+                <div class="dg-step">
+                    <div class="dg-step-num">2</div>
+                    <div class="dg-step-icon">🧪</div>
+                    <div class="dg-step-name">Add Product</div>
+                    <div class="dg-step-desc">Add <span id="dgStepWe">–</span> of ProBe-Bac WE and mix until fully dissolved.</div>
+                </div>
+                <div class="dg-step-arrow">→</div>
+                <div class="dg-step">
+                    <div class="dg-step-num">3</div>
+                    <div class="dg-step-icon">⚙️</div>
+                    <div class="dg-step-name">Set Dosatron</div>
+                    <div class="dg-step-desc">Set injection rate to <span id="dgStepRate">–</span>.</div>
+                </div>
+                <div class="dg-step-arrow">→</div>
+                <div class="dg-step">
+                    <div class="dg-step-num">4</div>
+                    <div class="dg-step-icon">🕐</div>
+                    <div class="dg-step-name">Operate System</div>
+                    <div class="dg-step-desc" id="dgStepOpDesc">Run system. Ensure target water intake coverage and refill stock tank as needed.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Values -->
+        <div class="dg-kpi-card">
+            <div class="dg-section-title" id="dgKpiTitle">KEY VALUES (FOR DAY 1–8)</div>
+            <div class="dg-kpi-row">
+                <div class="dg-kpi">
+                    <div class="dg-kpi-icon">🧪</div>
+                    <div class="dg-kpi-label">Adjusted WE Concentration</div>
+                    <div class="dg-kpi-val" id="dgKpiAdjPpm">–</div>
+                </div>
+                <div class="dg-kpi">
+                    <div class="dg-kpi-icon">🥤</div>
+                    <div class="dg-kpi-label">Stock Solution Concentration</div>
+                    <div class="dg-kpi-val" id="dgKpiStockConc">–</div>
+                </div>
+                <div class="dg-kpi">
+                    <div class="dg-kpi-icon">💧</div>
+                    <div class="dg-kpi-label">Water Coverage (Total)</div>
+                    <div class="dg-kpi-val" id="dgKpiCoverage">–</div>
+                </div>
+                <div class="dg-kpi">
+                    <div class="dg-kpi-icon">📦</div>
+                    <div class="dg-kpi-label">WE / Stock Tank</div>
+                    <div class="dg-kpi-val" id="dgKpiBatch">–</div>
+                </div>
+            </div>
+            <div class="dg-kpi-note">ℹ️ Values are calculated for Day <span id="dgKpiPeriod">1–8</span> application period.</div>
+        </div>
+
+    </div><!-- /dg-left -->
+
+    <!-- RIGHT: Unified Settings Panel -->
+    <div class="dg-right">
+        <div class="dg-settings-panel">
+            <div class="dg-settings-header">⚙️ FARM &amp; OPERATION SETTINGS</div>
+            <div class="dg-settings-body">
+
+                <div class="dg-settings-group">
+                    <div class="dg-settings-group-title">Farm Information</div>
+                    <div class="dg-form-grid">
+                        <div class="field-box">
+                            <label>Breed</label>
+                            <select id="dgBreed" onchange="dgSync('dgBreed','pbBreed'); calcPB()">
+                                <option value="cobb500">Cobb 500</option>
+                                <option value="ross308">Ross 308</option>
+                            </select>
+                        </div>
+                        <div class="field-box">
+                            <label>Marketed Days</label>
+                            <input type="text" inputmode="decimal" id="dgDays" value="35" oninput="formatNum(this); dgSync('dgDays','pbDays'); calcPB()">
+                        </div>
+                        <div class="field-box">
+                            <label>No. of Birds</label>
+                            <input type="text" inputmode="decimal" id="dgBirds" value="20,000" oninput="formatNum(this); dgSync('dgBirds','pbBirds'); calcPB()">
+                        </div>
+                        <div class="field-box">
+                            <label>Water:Feed Ratio</label>
+                            <input type="text" inputmode="decimal" id="dgWFRatio" value="2" oninput="dgSync('dgWFRatio','pbWFRatio'); calcPB()">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dg-settings-group">
+                    <div class="dg-settings-group-title">Application Period</div>
+                    <div class="dg-form-grid">
+                        <div class="field-box">
+                            <label>Start Day</label>
+                            <input type="text" inputmode="decimal" id="dgStartDay" value="1" oninput="formatNum(this); dgSync('dgStartDay','pbStartDay'); calcPB()">
+                        </div>
+                        <div class="field-box">
+                            <label>End Day</label>
+                            <input type="text" inputmode="decimal" id="dgEndDay" value="8" oninput="formatNum(this); dgSync('dgEndDay','pbEndDay'); calcPB()">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dg-settings-group">
+                    <div class="dg-settings-group-title">Dosatron Operation</div>
+                    <div class="dg-form-grid">
+                        <div class="field-box">
+                            <label>Dosatron Injection Rate (%)</label>
+                            <input type="text" inputmode="decimal" id="dgDosatronRate" value="1" oninput="formatNum(this); dgSync('dgDosatronRate','pbDosatronRate'); calcPB()">
+                        </div>
+                        <div class="field-box">
+                            <label>Operation Mode</label>
+                            <select id="dgOperationMode" onchange="dgSync('dgOperationMode','pbOperationMode'); calcPB()">
+                                <option value="continuous">All day</option>
+                                <option value="timed">Timed operation</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="dgTimedSection" style="display:none; margin-top:7px;">
+                        <div class="dg-form-grid">
+                            <div class="field-box">
+                                <label>Operation Hours / Day</label>
+                                <input type="text" inputmode="decimal" id="dgOpHours" value="6" oninput="formatNum(this); dgSync('dgOpHours','pbOperationHours'); calcPB()">
+                            </div>
+                            <div class="field-box">
+                                <label>Water Intake During Operation (%)</label>
+                                <input type="text" inputmode="decimal" id="dgOpShare" value="25" oninput="formatNum(this); dgSync('dgOpShare','pbOperationShare'); calcPB()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field-box" style="margin-top:7px;">
+                        <label>WE Concentration in Drinking Water (ppm)</label>
+                        <input type="text" inputmode="decimal" id="dgPpm" value="50" oninput="formatNum(this); dgSyncPpm(this); calcPB()">
+                    </div>
+                    <div class="field-box">
+                        <label>Stock Solution Tank Vol. (L)</label>
+                        <input type="text" inputmode="decimal" id="dgStockTank" value="100" oninput="formatNum(this); dgSync('dgStockTank','pbStockTank'); calcPB()">
+                    </div>
+                </div>
+
+                <div class="dg-settings-group">
+                    <div class="dg-settings-group-title">Package Information</div>
+                    <div class="dg-form-grid">
+                        <div class="field-box">
+                            <label>Unit Name</label>
+                            <input type="text" id="dgPkgName" value="bag" oninput="dgSync('dgPkgName','pbPkgName'); calcPB()">
+                        </div>
+                        <div class="field-box">
+                            <label>Grams / Unit (g)</label>
+                            <input type="text" inputmode="decimal" id="dgPkgGrams" value="1,000" oninput="formatNum(this); dgSync('dgPkgGrams','pbPkgGrams'); calcPB()">
+                        </div>
+                    </div>
+                    <div class="field-box" style="margin-top:6px;">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="dgDispUnit" onchange="dgSyncCheck('dgDispUnit','pbDispUnitToggle'); calcPB()">
+                            <span style="font-weight:700; color:#2d8a4e; font-size:0.88em;">Display in Units</span>
+                        </label>
+                    </div>
+                    <div class="dg-settings-hint">
+                        ✅ These settings are used to calculate the required dosage and operation plan.
+                    </div>
+                </div>
+
+            </div><!-- /dg-settings-body -->
+        </div><!-- /dg-settings-panel -->
+    </div><!-- /dg-right -->
+
+</div><!-- /dosatronGuideWrap -->
 
 <div class="table-card">
     <div class="table-card-header">📋 Daily Application Plan</div>
@@ -552,6 +962,95 @@ function syncPpm(el) {
     if (other) other.value = el.value;
 }
 
+/* ── Dosatron Guide sync helpers ── */
+function dgSync(fromId, toId) {
+    const from = document.getElementById(fromId);
+    const to = document.getElementById(toId);
+    if (from && to) to.value = from.value;
+}
+function dgSyncPpm(el) {
+    const pbPpm = document.getElementById('pbPpm');
+    const pbPpmD = document.getElementById('pbPpmDosatron');
+    if (pbPpm) pbPpm.value = el.value;
+    if (pbPpmD) pbPpmD.value = el.value;
+}
+function dgSyncCheck(fromId, toId) {
+    const from = document.getElementById(fromId);
+    const to = document.getElementById(toId);
+    if (from && to) to.checked = from.checked;
+}
+
+let _dgLastMode = '';
+function initDosatronGuide() {
+    const map = [
+        ['dgBreed','pbBreed'], ['dgDays','pbDays'], ['dgBirds','pbBirds'],
+        ['dgWFRatio','pbWFRatio'], ['dgStartDay','pbStartDay'], ['dgEndDay','pbEndDay'],
+        ['dgDosatronRate','pbDosatronRate'], ['dgOperationMode','pbOperationMode'],
+        ['dgOpHours','pbOperationHours'], ['dgOpShare','pbOperationShare'],
+        ['dgStockTank','pbStockTank'], ['dgPkgName','pbPkgName'], ['dgPkgGrams','pbPkgGrams']
+    ];
+    map.forEach(([dg, pb]) => {
+        const dgEl = document.getElementById(dg);
+        const pbEl = document.getElementById(pb);
+        if (dgEl && pbEl) dgEl.value = pbEl.value;
+    });
+    const dgDisp = document.getElementById('dgDispUnit');
+    const pbDisp = document.getElementById('pbDispUnitToggle');
+    if (dgDisp && pbDisp) dgDisp.checked = pbDisp.checked;
+    const pbPpmD = document.getElementById('pbPpmDosatron');
+    const dgPpm = document.getElementById('dgPpm');
+    if (dgPpm && pbPpmD) dgPpm.value = pbPpmD.value;
+}
+
+function updateDosatronGuide(params) {
+    const { dosatronRatePct, operationMode, operationHours, operationSharePct,
+            stockTankVol, wePerStockTank, stockConcGL, adjustedPpm, stockCoverageL,
+            startDay, endDay, totalG, pkgGrams, pkgName, showUnits, fmtPct, fmt0 } = params;
+
+    const period = `Day ${startDay}–${endDay}`;
+    const weLabel = showUnits && pkgGrams > 0
+        ? `${fmtPct(wePerStockTank / pkgGrams)} ${pkgName}`
+        : `${fmt0(wePerStockTank)} g`;
+    const totalBags = pkgGrams > 0 ? fmtPct(totalG / pkgGrams) : '–';
+    const rateLabel = `${fmtPct(dosatronRatePct)}%`;
+    const ratioLabel = `(1:${fmt0(100 / dosatronRatePct)})`;
+    const isTimed = operationMode === 'timed';
+
+    document.getElementById('dgPeriodBadge').textContent = period;
+    document.getElementById('dgKpiTitle').textContent = `KEY VALUES (FOR ${period.toUpperCase()})`;
+    document.getElementById('dgKpiPeriod').textContent = `${startDay}–${endDay}`;
+
+    document.getElementById('dgWeAmount').textContent = weLabel;
+    document.getElementById('dgStockVolDisplay').textContent = fmt0(stockTankVol);
+
+    document.getElementById('dgChipRate').textContent = rateLabel;
+    document.getElementById('dgChipRateSub').textContent = ratioLabel;
+    document.getElementById('dgChipOpTime').textContent = isTimed ? `${fmtPct(operationHours)} hr / day` : 'All day';
+    document.getElementById('dgChipWater').textContent = isTimed ? `${fmtPct(operationSharePct)}%` : '100%';
+    document.getElementById('dgChipBags').textContent = showUnits && pkgGrams > 0 ? `≈ ${totalBags} ${pkgName}s` : `≈ ${fmt0(totalG)} g`;
+
+    const warnBar = document.getElementById('dgWarningBar');
+    warnBar.style.display = isTimed ? 'block' : 'none';
+    if (isTimed) {
+        document.getElementById('dgWarnHours').textContent = fmtPct(operationHours);
+        document.getElementById('dgWarnShare').textContent = fmtPct(operationSharePct);
+    }
+
+    document.getElementById('dgTimedSection').style.display = isTimed ? 'block' : 'none';
+
+    document.getElementById('dgStepVol').textContent = fmt0(stockTankVol);
+    document.getElementById('dgStepWe').textContent = weLabel;
+    document.getElementById('dgStepRate').textContent = `${rateLabel} ${ratioLabel}`;
+    document.getElementById('dgStepOpDesc').textContent = isTimed
+        ? `Run for ${fmtPct(operationHours)} hr/day. Ensure ~${fmtPct(operationSharePct)}% of daily water intake during operation.`
+        : 'Run system all day. Check coverage and refill stock tank as needed.';
+
+    document.getElementById('dgKpiAdjPpm').textContent = `${fmt0(adjustedPpm)} ppm`;
+    document.getElementById('dgKpiStockConc').textContent = `${fmt0(stockConcGL)} g/L`;
+    document.getElementById('dgKpiCoverage').textContent = `${fmt0(stockCoverageL)} L`;
+    document.getElementById('dgKpiBatch').textContent = `${fmt0(wePerStockTank)} g / ${fmt0(stockTankVol)}L`;
+}
+
 function formatDays(days) {
     if (!days || days.length === 0) return "No refills required.";
     let ranges = [];
@@ -598,7 +1097,13 @@ function calcPB() {
     const isDosatron = method === 'dosatron';
     const fmt0 = (value) => Math.round(value).toLocaleString('en-US');
     const fmtPct = (value) => value.toLocaleString('en-US', {maximumFractionDigits: 2});
-    document.getElementById('pbMidLayout').style.display = isDosatron ? 'grid' : 'none';
+
+    if (isDosatron && _dgLastMode !== 'dosatron') initDosatronGuide();
+    _dgLastMode = method;
+
+    document.getElementById('pbTopLayout').style.display = isDosatron ? 'none' : 'grid';
+    document.getElementById('pbMidLayout').style.display = 'none';
+    document.getElementById('dosatronGuideWrap').style.display = isDosatron ? 'grid' : 'none';
     document.getElementById('pbTankField').style.display = isDosatron ? 'none' : 'block';
     document.getElementById('pbPpmField').style.display = isDosatron ? 'none' : 'block';
     document.getElementById('pbPeriodFields').style.display = 'grid';
@@ -750,6 +1255,14 @@ function calcPB() {
 
     const eqFeedDosage = ppm * wfRatio * 10;
     document.getElementById('resPbEqFeedDesc').innerText = fmt0(eqFeedDosage);
+
+    if (isDosatron) {
+        updateDosatronGuide({
+            dosatronRatePct, operationMode, operationHours, operationSharePct,
+            stockTankVol, wePerStockTank, stockConcGL, adjustedPpm, stockCoverageL,
+            startDay, endDay, totalG, pkgGrams, pkgName, showUnits, fmtPct, fmt0
+        });
+    }
 }
 
 calcPB();
