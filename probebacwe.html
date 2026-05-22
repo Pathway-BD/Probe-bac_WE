@@ -162,7 +162,7 @@
             </div>
             <div class="field-box">
                 <label>Water:Feed Ratio:</label>
-                <input type="text" inputmode="decimal" id="pbWFRatio" value="1.8" oninput="calcPB()">
+                <input type="text" inputmode="decimal" id="pbWFRatio" value="2" oninput="calcPB()">
             </div>
             <div class="field-box">
                 <label>Water Tank Vol. (L):</label>
@@ -170,7 +170,7 @@
             </div>
             <div class="field-box">
                 <label>WE Concentration (ppm):</label>
-                <input type="text" inputmode="decimal" id="pbPpm" value="15" oninput="formatNum(this); calcPB()">
+                <input type="text" inputmode="decimal" id="pbPpm" value="50" oninput="formatNum(this); calcPB()">
             </div>
         </div>
     </div>
@@ -314,8 +314,8 @@ function calcPB() {
     const breed = document.getElementById('pbBreed').value;
     const days = getVal('pbDays', 35);
     const birds = getVal('pbBirds', 20000);
-    const wfRatio = getVal('pbWFRatio', 1.8);
-    const ppm = getVal('pbPpm', 15);
+    const wfRatio = getVal('pbWFRatio', 2);
+    const ppm = getVal('pbPpm', 50);
     const tankVol = Math.max(getVal('pbTank', 1000), 10);
     const pkgName = document.getElementById('pbPkgName').value || 'Unit';
     const pkgGrams = getVal('pbPkgGrams', 500);
