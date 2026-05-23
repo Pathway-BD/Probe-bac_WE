@@ -764,7 +764,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 </div><!-- /dosatronGuideWrap -->
 
-<div class="daily-plan-layout">
+<div class="daily-plan-layout" id="dailyPlanLayout">
     <div class="table-card">
         <div class="table-card-header">📋 Daily Application Plan</div>
         <div class="table-scroll">
@@ -1106,6 +1106,7 @@ function calcPB() {
     document.getElementById('pbTankField').style.display = isDosatron ? 'none' : 'block';
     document.getElementById('pbPpmField').style.display = isDosatron ? 'none' : 'block';
     document.getElementById('pbFarmVarsCard').style.display = isDosatron ? 'none' : 'block';
+    document.getElementById('dailyPlanLayout').style.gridTemplateColumns = isDosatron ? '1fr' : '3fr 1fr';
     document.getElementById('pbTimedFields').style.display = isDosatron && operationMode === 'timed' ? 'block' : 'none';
     document.getElementById('pbTimedWarning').style.display = isDosatron && operationMode === 'timed' ? 'block' : 'none';
     document.getElementById('dosatronNote').style.display = isDosatron ? 'inline' : 'none';
