@@ -282,7 +282,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         text-align: center;
         background: #fafafa;
     }
-    .dg-chip-icon { font-size: 1.2em; display: block; margin-bottom: 3px; }
+    .dg-chip-icon { display: block; margin-bottom: 3px; }
+    .dg-chip-icon img { width: 36px; height: 36px; object-fit: contain; }
     .dg-chip-label { font-size: 0.65em; color: #888; display: block; margin-bottom: 3px; line-height: 1.3; }
     .dg-chip-val { font-size: 1.25em; font-weight: 900; color: #e65100; display: block; }
     .dg-chip-sub { font-size: 0.6em; color: #aaa; display: block; }
@@ -345,7 +346,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         border-radius: 8px;
         border: 1px solid #e5eaf3;
     }
-    .dg-kpi-icon { font-size: 1.2em; margin-bottom: 3px; }
+    .dg-kpi-icon { margin-bottom: 3px; }
+    .dg-kpi-icon img { width: 36px; height: 36px; object-fit: contain; }
     .dg-kpi-label { font-size: 0.65em; color: #888; margin-bottom: 4px; line-height: 1.3; }
     .dg-kpi-val { font-size: 1.05em; font-weight: 900; color: #1e3a7a; }
     .dg-kpi-note { font-size: 0.72em; color: #888; }
@@ -601,24 +603,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <div class="dg-action-sub">stock tank and operate Dosatron as below.</div>
                 <div class="dg-chips">
                     <div class="dg-chip">
-                        <span class="dg-chip-icon">⚙️</span>
+                        <span class="dg-chip-icon"><img src="Dosatron_Setting.jpg" alt="Dosatron Setting"></span>
                         <span class="dg-chip-label">Dosatron Setting</span>
                         <span class="dg-chip-val" id="dgChipRate">–</span>
                         <span class="dg-chip-sub" id="dgChipRateSub"></span>
                     </div>
                     <div class="dg-chip">
-                        <span class="dg-chip-icon">⏱️</span>
+                        <span class="dg-chip-icon"><img src="Operation_Time.jpg" alt="Operation Time"></span>
                         <span class="dg-chip-label">Operation Time</span>
                         <span class="dg-chip-val" id="dgChipOpTime">–</span>
                     </div>
                     <div class="dg-chip">
-                        <span class="dg-chip-icon">💧</span>
+                        <span class="dg-chip-icon"><img src="Water_coverage.jpg" alt="Water Coverage"></span>
                         <span class="dg-chip-label">Target Water Intake</span>
                         <span class="dg-chip-val" id="dgChipWater">–</span>
                         <span class="dg-chip-sub">of daily intake</span>
                     </div>
                     <div class="dg-chip">
-                        <span class="dg-chip-icon">📦</span>
+                        <span class="dg-chip-icon"><img src="Bag_Needed.jpg" alt="Bags Needed"></span>
                         <span class="dg-chip-label">Bags Needed</span>
                         <span class="dg-chip-val" id="dgChipBags">–</span>
                     </div>
@@ -664,22 +666,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="dg-section-title" id="dgKpiTitle">KEY VALUES (FOR DAY 1–8)</div>
             <div class="dg-kpi-row">
                 <div class="dg-kpi">
-                    <div class="dg-kpi-icon">🧪</div>
+                    <div class="dg-kpi-icon"><img src="Adjusted_WE_concentration.jpg" alt="Adjusted WE Concentration"></div>
                     <div class="dg-kpi-label">Adjusted WE Concentration</div>
                     <div class="dg-kpi-val" id="dgKpiAdjPpm">–</div>
                 </div>
                 <div class="dg-kpi">
-                    <div class="dg-kpi-icon">🥤</div>
+                    <div class="dg-kpi-icon"><img src="Stock_solution_concentartion.jpg" alt="Stock Solution Concentration"></div>
                     <div class="dg-kpi-label">Stock Solution Concentration</div>
                     <div class="dg-kpi-val" id="dgKpiStockConc">–</div>
                 </div>
                 <div class="dg-kpi">
-                    <div class="dg-kpi-icon">💧</div>
+                    <div class="dg-kpi-icon"><img src="Water_coverage.jpg" alt="Water Coverage"></div>
                     <div class="dg-kpi-label">Water Coverage (Total)</div>
                     <div class="dg-kpi-val" id="dgKpiCoverage">–</div>
                 </div>
                 <div class="dg-kpi">
-                    <div class="dg-kpi-icon">📦</div>
+                    <div class="dg-kpi-icon"><img src="WE_stock_Tank.jpg" alt="WE / Stock Tank"></div>
                     <div class="dg-kpi-label">WE / Stock Tank</div>
                     <div class="dg-kpi-val" id="dgKpiBatch">–</div>
                 </div>
