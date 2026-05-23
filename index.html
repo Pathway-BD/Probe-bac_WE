@@ -1085,13 +1085,14 @@ function calcPB() {
     const operationHours = Math.min(Math.max(getVal('pbOperationHours', 6), 0.1), 24);
     const operationSharePct = Math.min(Math.max(getVal('pbOperationShare', (operationHours / 24) * 100), 0.1), 100);
     const operationShare = operationMode === 'timed' ? operationSharePct / 100 : 1;
+    const isDosatron = method === 'dosatron';
     const startDay = Math.max(1, Math.round(getVal('pbStartDay', 1)));
-    const endDay = Math.min(Math.round(getVal('pbEndDay', 8)), days, 40);
+    const endDay = isDosatron
+        ? Math.min(Math.round(getVal('pbEndDay', days)), days)
+        : days;
     const pkgName = document.getElementById('pbPkgName').value || 'Unit';
     const pkgGrams = getVal('pbPkgGrams', 500);
     const showUnits = document.getElementById('pbDispUnitToggle').checked;
-
-    const isDosatron = method === 'dosatron';
     const fmt0 = (value) => Math.round(value).toLocaleString('en-US');
     const fmtPct = (value) => value.toLocaleString('en-US', {maximumFractionDigits: 2});
 
