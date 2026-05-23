@@ -1094,6 +1094,7 @@ function calcPB() {
     const pkgGrams = getVal('pbPkgGrams', 500);
     const showUnits = document.getElementById('pbDispUnitToggle').checked;
     const fmt0 = (value) => Math.round(value).toLocaleString('en-US');
+    const fmt1 = (value) => value.toLocaleString('en-US', {minimumFractionDigits: 1, maximumFractionDigits: 1});
     const fmtPct = (value) => value.toLocaleString('en-US', {maximumFractionDigits: 2});
 
     if (isDosatron && _dgLastMode !== 'dosatron') initDosatronGuide();
@@ -1107,7 +1108,7 @@ function calcPB() {
     document.getElementById('pbTimedFields').style.display = isDosatron && operationMode === 'timed' ? 'block' : 'none';
     document.getElementById('pbTimedWarning').style.display = isDosatron && operationMode === 'timed' ? 'block' : 'none';
     document.getElementById('dosatronNote').style.display = isDosatron ? 'inline' : 'none';
-    document.getElementById('resPbTotalTitle').innerText = 'Selected Period Dosage';
+    document.getElementById('resPbTotalTitle').innerText = 'Full Period Dosage';
 
     document.getElementById('pbThFeed').innerHTML = 'Feed<br>(g/head)';
     document.getElementById('pbThWater').innerHTML = 'Daily Water Use<br>(L/House)';
@@ -1227,10 +1228,10 @@ function calcPB() {
     const totalWeElem = document.getElementById('resPbTotal');
     const totalWeUnit = document.getElementById('resPbUnit');
     if (totalG <= 500) {
-        totalWeElem.innerText = fmt0(totalG);
+        totalWeElem.innerText = fmt1(totalG);
         totalWeUnit.innerText = 'g';
     } else {
-        totalWeElem.innerText = fmt0(totalG / 1000);
+        totalWeElem.innerText = fmt1(totalG / 1000);
         totalWeUnit.innerText = 'kg';
     }
 
