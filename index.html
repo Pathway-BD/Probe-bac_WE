@@ -114,7 +114,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     }
     .res-card.pkg-settings { border-left: 10px solid #17a2b8; background: #fff; }
 
-    .pb-top-layout { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+    .pb-top-layout { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+    .daily-plan-layout { display: grid; grid-template-columns: 3fr 1fr; gap: 15px; margin-bottom: 15px; }
     .pb-mid-layout { display: none; grid-template-columns: 1.5fr 1fr; gap: 15px; margin-bottom: 20px; }
 
     .table-scroll { height: 500px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; }
@@ -200,7 +201,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     @media (max-width: 768px) {
         .pb-top-layout { grid-template-columns: 1fr 1fr !important; }
         .pb-top-layout .schedule-summary { grid-column: 1 / -1; }
-        .pb-top-layout .farm-vars-card { grid-column: 1 / -1; }
+        .daily-plan-layout { grid-template-columns: 1fr !important; }
         .pb-mid-layout { grid-template-columns: 1fr !important; }
         .table-scroll { height: 260px; }
         .dosatron-grid { grid-template-columns: 1fr !important; }
@@ -481,40 +482,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
     </div>
 
-    <div class="res-card farm-vars-card">
-        <h4 style="color:#e65100;">Farm Variables</h4>
-        <div class="field-box">
-            <label>Breed:</label>
-            <select id="pbBreed" onchange="calcPB()">
-                <option value="cobb500">Cobb 500</option>
-                <option value="ross308">Ross 308</option>
-            </select>
-        </div>
-        <div class="field-box">
-            <label>Marketed Days:</label>
-            <input type="text" inputmode="decimal" id="pbDays" value="35" oninput="formatNum(this); calcPB()">
-        </div>
-        <div class="field-box">
-            <label>No. of Birds:</label>
-            <input type="text" inputmode="decimal" id="pbBirds" value="20,000" oninput="formatNum(this); calcPB()">
-        </div>
-        <div class="field-box">
-            <label>Water:Feed Ratio:</label>
-            <input type="text" inputmode="decimal" id="pbWFRatio" value="2" oninput="calcPB()">
-        </div>
-        <div id="pbPeriodFields" style="display:none;">
-            <input type="hidden" id="pbStartDay" value="1">
-            <input type="hidden" id="pbEndDay" value="8">
-        </div>
-        <div class="field-box" id="pbTankField">
-            <label>Water Tank Vol. (L):</label>
-            <input type="text" inputmode="decimal" id="pbTank" value="1,000" oninput="formatNum(this); calcPB()">
-        </div>
-        <div class="field-box" id="pbPpmField">
-            <label>WE Concentration in Drinking Water (ppm):</label>
-            <input type="text" inputmode="decimal" id="pbPpm" value="50" oninput="formatNum(this); calcPB()">
-        </div>
-    </div>
 </div>
 
 <!-- Dosatron mid row: shown only in Dosatron mode -->
@@ -797,22 +764,58 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 </div><!-- /dosatronGuideWrap -->
 
-<div class="table-card">
-    <div class="table-card-header">📋 Daily Application Plan</div>
-    <div class="table-scroll">
-        <table>
-            <thead>
-                <tr>
-                    <th id="pbThDay">Day</th>
-                    <th id="pbThFeed">Feed<br>(g/head)</th>
-                    <th id="pbThWater">Daily Water Use<br>(L/House)</th>
-                    <th id="pbThStock">Stock Use<br>(L/day)</th>
-                    <th id="pbThRemain">Tank Remain<br>(L)</th>
-                    <th id="pbThAction">Action Guide<br>(When Tank Empty)</th>
-                </tr>
-            </thead>
-            <tbody id="pbTableBody"></tbody>
-        </table>
+<div class="daily-plan-layout">
+    <div class="table-card">
+        <div class="table-card-header">📋 Daily Application Plan</div>
+        <div class="table-scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th id="pbThDay">Day</th>
+                        <th id="pbThFeed">Feed<br>(g/head)</th>
+                        <th id="pbThWater">Daily Water Use<br>(L/House)</th>
+                        <th id="pbThStock">Stock Use<br>(L/day)</th>
+                        <th id="pbThRemain">Tank Remain<br>(L)</th>
+                        <th id="pbThAction">Action Guide<br>(When Tank Empty)</th>
+                    </tr>
+                </thead>
+                <tbody id="pbTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+    <div class="res-card farm-vars-card">
+        <h4 style="color:#e65100;">Farm Variables</h4>
+        <div class="field-box">
+            <label>Breed:</label>
+            <select id="pbBreed" onchange="calcPB()">
+                <option value="cobb500">Cobb 500</option>
+                <option value="ross308">Ross 308</option>
+            </select>
+        </div>
+        <div class="field-box">
+            <label>Marketed Days:</label>
+            <input type="text" inputmode="decimal" id="pbDays" value="35" oninput="formatNum(this); calcPB()">
+        </div>
+        <div class="field-box">
+            <label>No. of Birds:</label>
+            <input type="text" inputmode="decimal" id="pbBirds" value="20,000" oninput="formatNum(this); calcPB()">
+        </div>
+        <div class="field-box">
+            <label>Water:Feed Ratio:</label>
+            <input type="text" inputmode="decimal" id="pbWFRatio" value="2" oninput="calcPB()">
+        </div>
+        <div id="pbPeriodFields" style="display:none;">
+            <input type="hidden" id="pbStartDay" value="1">
+            <input type="hidden" id="pbEndDay" value="8">
+        </div>
+        <div class="field-box" id="pbTankField">
+            <label>Water Tank Vol. (L):</label>
+            <input type="text" inputmode="decimal" id="pbTank" value="1,000" oninput="formatNum(this); calcPB()">
+        </div>
+        <div class="field-box" id="pbPpmField">
+            <label>WE Concentration in Drinking Water (ppm):</label>
+            <input type="text" inputmode="decimal" id="pbPpm" value="50" oninput="formatNum(this); calcPB()">
+        </div>
     </div>
 </div>
 
@@ -1231,7 +1234,7 @@ function calcPB() {
     }
 
     const totalUnitsElem = document.getElementById('resPbTotalUnits');
-    if (pkgGrams > 0) {
+    if (showUnits && pkgGrams > 0) {
         let totalUnits = fmtPct(totalG / pkgGrams);
         totalUnitsElem.innerText = `≈ ${totalUnits} ${pkgName}s Needed`;
     } else {
