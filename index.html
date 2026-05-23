@@ -410,6 +410,41 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         .dg-step { min-width: 45%; }
         .dg-form-grid { grid-template-columns: 1fr 1fr !important; }
     }
+
+    /* Print Summary Button */
+    .print-summary-btn {
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        width: 100%; padding: 10px 0;
+        background: #fff; color: #1e3a7a;
+        border: 1.5px solid #1e3a7a; border-radius: 8px;
+        font-size: 0.88em; font-weight: 700; cursor: pointer;
+        transition: background 0.2s, color 0.2s;
+    }
+    .print-summary-btn:hover { background: #1e3a7a; color: #fff; }
+
+    @media print {
+        /* Hide everything except the 3 summary cards */
+        .top-banner, .bottom-banner, .bottom-bar, .bottom-note,
+        .pb-top-layout, .pb-mid-layout,
+        .dg-right, .table-card, .print-summary-btn { display: none !important; }
+
+        body { background: #fff; }
+        .container { max-width: 100%; padding: 0; }
+
+        /* Make dosatronGuideWrap single-column so dg-left fills the page */
+        #dosatronGuideWrap {
+            display: block !important;
+            padding: 0;
+        }
+        .dg-left { gap: 10px; }
+
+        /* Clean up card shadows for print */
+        .dg-action-card, .dg-steps-card, .dg-kpi-card {
+            box-shadow: none !important;
+            border: 1px solid #ccc !important;
+            break-inside: avoid;
+        }
+    }
 </style>
 </head>
 <body>
@@ -689,6 +724,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="dg-kpi-note" id="dgStockPrepNote" style="margin-bottom:5px;">📅 Stock Prep: <span id="dgStockPrepDays">–</span></div>
             <div class="dg-kpi-note">ℹ️ Values are calculated for Day <span id="dgKpiPeriod">1–8</span> application period.</div>
         </div>
+
+        <button class="print-summary-btn" onclick="window.print()">🖨 Print Summary</button>
 
     </div><!-- /dg-left -->
 
