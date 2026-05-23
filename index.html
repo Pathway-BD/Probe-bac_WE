@@ -783,7 +783,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </table>
         </div>
     </div>
-    <div class="res-card farm-vars-card">
+    <div class="res-card farm-vars-card" id="pbFarmVarsCard">
         <h4 style="color:#e65100;">Farm Variables</h4>
         <div class="field-box">
             <label>Breed:</label>
@@ -1105,6 +1105,7 @@ function calcPB() {
     document.getElementById('dosatronGuideWrap').style.display = isDosatron ? 'grid' : 'none';
     document.getElementById('pbTankField').style.display = isDosatron ? 'none' : 'block';
     document.getElementById('pbPpmField').style.display = isDosatron ? 'none' : 'block';
+    document.getElementById('pbFarmVarsCard').style.display = isDosatron ? 'none' : 'block';
     document.getElementById('pbTimedFields').style.display = isDosatron && operationMode === 'timed' ? 'block' : 'none';
     document.getElementById('pbTimedWarning').style.display = isDosatron && operationMode === 'timed' ? 'block' : 'none';
     document.getElementById('dosatronNote').style.display = isDosatron ? 'inline' : 'none';
