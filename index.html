@@ -686,6 +686,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <div class="dg-kpi-val" id="dgKpiBatch">–</div>
                 </div>
             </div>
+            <div class="dg-kpi-note" id="dgStockPrepNote" style="margin-bottom:5px;">📅 Stock Prep: <span id="dgStockPrepDays">–</span></div>
             <div class="dg-kpi-note">ℹ️ Values are calculated for Day <span id="dgKpiPeriod">1–8</span> application period.</div>
         </div>
 
@@ -1209,6 +1210,7 @@ function calcPB() {
     }
 
     document.getElementById('resPbSchedule').innerHTML = formatDays(refillDays);
+    document.getElementById('dgStockPrepDays').textContent = refillDays.length > 0 ? 'Day ' + refillDays.join(', ') : 'No refills required';
 
     let quickText = "";
     if (isDosatron) {
