@@ -498,16 +498,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <label>Water:Feed Ratio:</label>
             <input type="text" inputmode="decimal" id="pbWFRatio" value="2" oninput="calcPB()">
         </div>
-        <div class="method-hint" id="pbMethodHint">Water Tank mode calculates ProBe-Bac WE requirement only for the selected application period.</div>
-        <div class="period-fields" id="pbPeriodFields">
-            <div class="field-box">
-                <label>Application Start Day:</label>
-                <input type="text" inputmode="decimal" id="pbStartDay" value="1" oninput="formatNum(this); calcPB()">
-            </div>
-            <div class="field-box">
-                <label>Application End Day:</label>
-                <input type="text" inputmode="decimal" id="pbEndDay" value="8" oninput="formatNum(this); calcPB()">
-            </div>
+        <div id="pbPeriodFields" style="display:none;">
+            <input type="hidden" id="pbStartDay" value="1">
+            <input type="hidden" id="pbEndDay" value="8">
         </div>
         <div class="field-box" id="pbTankField">
             <label>Water Tank Vol. (L):</label>
@@ -1106,13 +1099,9 @@ function calcPB() {
     document.getElementById('dosatronGuideWrap').style.display = isDosatron ? 'grid' : 'none';
     document.getElementById('pbTankField').style.display = isDosatron ? 'none' : 'block';
     document.getElementById('pbPpmField').style.display = isDosatron ? 'none' : 'block';
-    document.getElementById('pbPeriodFields').style.display = 'grid';
     document.getElementById('pbTimedFields').style.display = isDosatron && operationMode === 'timed' ? 'block' : 'none';
     document.getElementById('pbTimedWarning').style.display = isDosatron && operationMode === 'timed' ? 'block' : 'none';
     document.getElementById('dosatronNote').style.display = isDosatron ? 'inline' : 'none';
-    document.getElementById('pbMethodHint').innerText = isDosatron
-        ? `Dosatron mode calculates stock solution concentration, stock tank refill timing, and total WE usage only for the selected application period, Day ${startDay}~${endDay}.`
-        : `Water Tank mode calculates ProBe-Bac WE requirement only for the selected application period, Day ${startDay}~${endDay}.`;
     document.getElementById('resPbTotalTitle').innerText = 'Selected Period Dosage';
 
     document.getElementById('pbThFeed').innerHTML = 'Feed<br>(g/head)';
