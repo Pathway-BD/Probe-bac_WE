@@ -1210,7 +1210,7 @@ function calcPB() {
     }
 
     document.getElementById('resPbSchedule').innerHTML = formatDays(refillDays);
-    document.getElementById('dgStockPrepDays').innerHTML = refillDays.length > 0 ? '<strong>Day ' + refillDays.join(', ') + '</strong>' : 'No refills required';
+    document.getElementById('dgStockPrepDays').innerHTML = refillDays.length > 0 ? '<strong style="color:#2d8a4e;">Day ' + refillDays.join(', ') + '</strong>' : 'No refills required';
 
     let quickText = "";
     if (isDosatron) {
