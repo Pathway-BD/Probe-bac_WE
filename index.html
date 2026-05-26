@@ -212,51 +212,65 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         .method-inline select { flex: 1; min-width: 0; }
         .period-fields { grid-template-columns: 1fr 1fr !important; }
 
-        /* Farm Vars: 모바일에서 슬라이드업 패널 */
-        #pbFarmVarsCard {
+        /* 공통 슬라이드업 패널 스타일 */
+        #pbFarmVarsCard, #dgRight {
             position: fixed !important;
             left: 0; right: 0; bottom: -100vh;
             width: 100%; max-height: 85vh;
             overflow-y: auto; overflow-x: hidden;
+            background: #fff;
             border-radius: 22px 22px 0 0 !important;
             border-left: none !important;
-            box-shadow: 0 -6px 30px rgba(0,0,0,0.22) !important;
+            box-shadow: 0 -6px 30px rgba(0,0,0,0.25) !important;
             z-index: 1002;
             transition: bottom 0.32s cubic-bezier(0.32,0.72,0,1);
-            margin: 0 !important;
-            padding: 0 !important;
+            margin: 0 !important; padding: 0 !important;
         }
-        #pbFarmVarsCard.panel-open { bottom: 0 !important; }
+        #pbFarmVarsCard.panel-open,
+        #dgRight.panel-open { bottom: 0 !important; }
         .fv-panel-inner { padding: 16px 18px 30px; }
         .fv-handle { width: 40px; height: 4px; background: #ddd; border-radius: 2px; margin: 12px auto 14px; }
         .fv-panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .fv-close-btn { display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; border: none; background: #f0f0f0; color: #555; font-size: 1em; cursor: pointer; }
+        .fv-close-btn { display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; border: none; background: #f0f0f0; color: #555; font-size: 1em; cursor: pointer; flex-shrink: 0; }
+        .dg-settings-panel-close { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; border: none; background: #f0f0f0; color: #555; font-size: 0.9em; cursor: pointer; flex-shrink: 0; margin-left: auto; }
     }
 
-    /* FAB 버튼 (모바일 전용) */
-    .farm-vars-fab {
+    /* FAB 버튼 공통 (모바일 전용) */
+    .vars-fab {
         display: none;
-        position: fixed; bottom: 24px; right: 20px;
-        width: 56px; height: 56px; border-radius: 50%;
-        background: #e65100; color: #fff; border: none;
-        font-size: 1.45em; cursor: pointer;
-        box-shadow: 0 4px 16px rgba(230,81,0,0.45);
-        z-index: 1001; align-items: center; justify-content: center;
-        transition: transform 0.2s;
+        position: fixed; bottom: 24px; right: 18px;
+        height: 46px; border-radius: 23px;
+        padding: 0 18px 0 14px;
+        border: none; color: #fff; cursor: pointer;
+        font-size: 0.88em; font-weight: 700; letter-spacing: 0.3px;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.28);
+        z-index: 1001; align-items: center; justify-content: center; gap: 7px;
+        transition: transform 0.18s, box-shadow 0.18s;
+        white-space: nowrap;
     }
-    .farm-vars-fab:active { transform: scale(0.92); }
+    .vars-fab:active { transform: scale(0.94); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+    .vars-fab .fab-icon { font-size: 1.15em; }
+    .vars-fab-tank { background: #e65100; }
+    .vars-fab-dosatron { background: #4b2791; }
     @media (max-width: 768px) {
-        .farm-vars-fab { display: flex; }
-        .farm-vars-fab.hidden { display: none !important; }
+        .vars-fab { display: flex; }
+        .vars-fab.hidden { display: none !important; }
     }
 
-    /* 오버레이 */
-    .farm-vars-overlay {
+    /* 핸들·닫기버튼: 데스크탑에서 숨김 */
+    .fv-handle, .fv-close-btn, .dg-settings-panel-close { display: none; }
+    @media (max-width: 768px) {
+        .fv-handle { display: block; }
+        .fv-close-btn, .dg-settings-panel-close { display: flex; }
+    }
+
+    /* 공통 오버레이 */
+    .vars-overlay {
         display: none; position: fixed; inset: 0;
-        background: rgba(0,0,0,0.45); z-index: 1001;
+        background: rgba(0,0,0,0.48); z-index: 1001;
         backdrop-filter: blur(2px);
     }
-    .farm-vars-overlay.panel-open { display: block; }
+    .vars-overlay.panel-open { display: block; }
 
     /* ── Watermark ── */
     .watermark {
@@ -707,9 +721,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div><!-- /dg-left -->
 
     <!-- RIGHT: Unified Settings Panel -->
-    <div class="dg-right">
+    <div class="dg-right" id="dgRight">
+        <div class="fv-handle"></div>
         <div class="dg-settings-panel">
-            <div class="dg-settings-header">⚙️ FARM &amp; OPERATION SETTINGS</div>
+            <div class="dg-settings-header" style="display:flex; align-items:center; justify-content:space-between;">
+                <span>⚙️ FARM &amp; OPERATION SETTINGS</span>
+                <button class="dg-settings-panel-close" onclick="closeAllPanels()">✕</button>
+            </div>
             <div class="dg-settings-body">
 
                 <div class="dg-settings-group">
@@ -893,8 +911,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <!-- FAB: Farm Variables (mobile only) -->
-<button class="farm-vars-fab hidden" id="farmVarsFab" onclick="toggleFarmPanel()" aria-label="Farm Variables">⚙️</button>
-<div class="farm-vars-overlay" id="farmVarsOverlay" onclick="toggleFarmPanel()"></div>
+<!-- FAB: Water Tank -->
+<button class="vars-fab vars-fab-tank hidden" id="farmVarsFab" onclick="toggleFarmPanel()" aria-label="Farm Variables">
+    <span class="fab-icon">✏️</span> Enter Farm Info
+</button>
+<!-- FAB: Dosatron -->
+<button class="vars-fab vars-fab-dosatron hidden" id="dosatronFab" onclick="toggleDosatronPanel()" aria-label="Dosatron Settings">
+    <span class="fab-icon">✏️</span> Enter Farm Info
+</button>
+<!-- 공통 오버레이 -->
+<div class="vars-overlay" id="varsOverlay" onclick="closeAllPanels()"></div>
 
 </div><!-- /padding wrapper -->
 
@@ -1117,13 +1143,36 @@ function updateDosatronGuide(params) {
     document.getElementById('dgKpiBatch').textContent = `${fmt0(wePerStockTank)} g / ${fmt0(stockTankVol)}L`;
 }
 
+function closeAllPanels() {
+    ['pbFarmVarsCard','dgRight'].forEach(id => {
+        document.getElementById(id)?.classList.remove('panel-open');
+    });
+    document.getElementById('varsOverlay')?.classList.remove('panel-open');
+    document.body.style.overflow = '';
+}
+
 function toggleFarmPanel() {
     const card = document.getElementById('pbFarmVarsCard');
-    const overlay = document.getElementById('farmVarsOverlay');
+    const overlay = document.getElementById('varsOverlay');
     const isOpen = card.classList.contains('panel-open');
-    card.classList.toggle('panel-open', !isOpen);
-    overlay.classList.toggle('panel-open', !isOpen);
-    document.body.style.overflow = isOpen ? '' : 'hidden';
+    closeAllPanels();
+    if (!isOpen) {
+        card.classList.add('panel-open');
+        overlay.classList.add('panel-open');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function toggleDosatronPanel() {
+    const panel = document.getElementById('dgRight');
+    const overlay = document.getElementById('varsOverlay');
+    const isOpen = panel.classList.contains('panel-open');
+    closeAllPanels();
+    if (!isOpen) {
+        panel.classList.add('panel-open');
+        overlay.classList.add('panel-open');
+        document.body.style.overflow = 'hidden';
+    }
 }
 
 function formatDays(days) {
@@ -1184,15 +1233,19 @@ function calcPB() {
     document.getElementById('pbFarmVarsCard').style.display = isDosatron ? 'none' : 'block';
     document.getElementById('dailyPlanLayout').style.gridTemplateColumns = isDosatron ? '1fr' : '3fr 1fr';
     const fab = document.getElementById('farmVarsFab');
-    if (fab) {
-        if (isDosatron) {
-            fab.classList.add('hidden');
-            document.getElementById('pbFarmVarsCard').classList.remove('panel-open');
-            document.getElementById('farmVarsOverlay').classList.remove('panel-open');
-            document.body.style.overflow = '';
-        } else {
-            fab.classList.remove('hidden');
-        }
+    const dosatronFab = document.getElementById('dosatronFab');
+    if (isDosatron) {
+        if (fab) fab.classList.add('hidden');
+        if (dosatronFab) dosatronFab.classList.remove('hidden');
+        document.getElementById('pbFarmVarsCard').classList.remove('panel-open');
+        document.getElementById('varsOverlay')?.classList.remove('panel-open');
+        document.body.style.overflow = '';
+    } else {
+        if (fab) fab.classList.remove('hidden');
+        if (dosatronFab) dosatronFab.classList.add('hidden');
+        document.getElementById('dgRight').classList.remove('panel-open');
+        document.getElementById('varsOverlay')?.classList.remove('panel-open');
+        document.body.style.overflow = '';
     }
     document.getElementById('pbPeriodFields').style.display = isDosatron ? 'none' : 'grid';
     document.getElementById('pbTimedFields').style.display = isDosatron && operationMode === 'timed' ? 'block' : 'none';
