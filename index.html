@@ -115,10 +115,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .res-card.pkg-settings { border-left: 10px solid #17a2b8; background: #fff; }
 
     .pb-top-layout { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+    .pb-top-layout > * { min-width: 0; }
     .daily-plan-layout { display: grid; grid-template-columns: 3fr 1fr; gap: 15px; margin-bottom: 15px; }
+    .daily-plan-layout > * { min-width: 0; }
     .pb-mid-layout { display: none; grid-template-columns: 1.5fr 1fr; gap: 15px; margin-bottom: 20px; }
 
-    .table-scroll { height: 500px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; }
+    .table-scroll { height: 500px; overflow-y: auto; overflow-x: auto; border: 1px solid #eee; border-radius: 8px; }
     .table-scroll table { width: 100%; border-collapse: collapse; }
     .table-scroll th {
         font-size: 0.9em; padding: 12px 5px; position: sticky; top: 0;
