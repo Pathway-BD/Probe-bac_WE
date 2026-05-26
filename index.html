@@ -804,9 +804,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <label>Water:Feed Ratio:</label>
             <input type="text" inputmode="decimal" id="pbWFRatio" value="2" oninput="calcPB()">
         </div>
-        <div id="pbPeriodFields" style="display:none;">
-            <input type="hidden" id="pbStartDay" value="1">
-            <input type="hidden" id="pbEndDay" value="8">
+        <div id="pbPeriodFields" class="period-fields" style="display:none;">
+            <div class="field-box">
+                <label>Application Start Day:</label>
+                <input type="text" inputmode="decimal" id="pbStartDay" value="1" oninput="formatNum(this); calcPB()">
+            </div>
+            <div class="field-box">
+                <label>Application End Day:</label>
+                <input type="text" inputmode="decimal" id="pbEndDay" value="8" oninput="formatNum(this); calcPB()">
+            </div>
         </div>
         <div class="field-box" id="pbTankField">
             <label>Water Tank Vol. (L):</label>
