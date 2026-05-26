@@ -1095,9 +1095,7 @@ function calcPB() {
     const operationShare = operationMode === 'timed' ? operationSharePct / 100 : 1;
     const isDosatron = method === 'dosatron';
     const startDay = Math.max(1, Math.round(getVal('pbStartDay', 1)));
-    const endDay = isDosatron
-        ? Math.min(Math.round(getVal('pbEndDay', days)), days, 40)
-        : Math.min(days, 40);
+    const endDay = Math.min(Math.round(getVal('pbEndDay', 8)), days, 40);
     const pkgName = document.getElementById('pbPkgName').value || 'Unit';
     const pkgGrams = getVal('pbPkgGrams', 500);
     const showUnits = document.getElementById('pbDispUnitToggle').checked;
