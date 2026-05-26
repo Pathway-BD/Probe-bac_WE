@@ -1107,6 +1107,7 @@ function calcPB() {
     document.getElementById('pbPpmField').style.display = isDosatron ? 'none' : 'block';
     document.getElementById('pbFarmVarsCard').style.display = isDosatron ? 'none' : 'block';
     document.getElementById('dailyPlanLayout').style.gridTemplateColumns = isDosatron ? '1fr' : '3fr 1fr';
+    document.getElementById('pbPeriodFields').style.display = isDosatron ? 'none' : 'grid';
     document.getElementById('pbTimedFields').style.display = isDosatron && operationMode === 'timed' ? 'block' : 'none';
     document.getElementById('pbTimedWarning').style.display = isDosatron && operationMode === 'timed' ? 'block' : 'none';
     document.getElementById('dosatronNote').style.display = isDosatron ? 'inline' : 'none';
