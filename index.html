@@ -102,6 +102,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .toggle-switch input::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: white; border-radius: 50%; transition: transform 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
     .toggle-switch input:checked { background: #d32f2f; }
     .toggle-switch input:checked::after { transform: translateX(20px); }
+    .toggle-switch input.toggle-green:checked { background: #28a745; }
 
     .res-card {
         padding: 20px; border-radius: 12px; border: 1px solid #dee2e6;
@@ -457,7 +458,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <div class="res-card we-total">
-        <h4 id="resPbTotalTitle" style="text-align: center; border-bottom: none; margin-bottom: 5px; color: #333; font-size: 0.95em;">Full Period Dosage</h4>
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+            <label class="toggle-switch" style="margin-top:0;">
+                <input type="checkbox" id="pbDosageViewToggle" class="toggle-green" onchange="calcPB()" checked>
+                <span id="resPbTotalTitle" style="font-size:0.82em; font-weight:700; color:#333; white-space:nowrap;"></span>
+            </label>
+        </div>
+        <div id="resPbPeriodLabel" style="font-size:0.75em; color:#888; margin-bottom:2px;"></div>
         <div style="font-size: 3em; font-weight: 900; color: #28a745; margin-top: 5px; line-height: 1;">
             <span id="resPbTotal">-</span><span id="resPbUnit" style="font-size: 0.4em; color: #555; margin-left: 5px;">kg</span>
         </div>
@@ -1133,6 +1140,12 @@ function calcPB() {
     let currentRemain = 0;
     let refillDays = [];
 
+    let totalGFull = 0;
+    for (let d = 1; d <= days && d <= 40; d++) {
+        const fi = data[breed][d]?.dailyIntake || 0;
+        totalGFull += (fi * wfRatio * birds / 1000) * ppm / 1000;
+    }
+
     const wePerTank = tankVol * (ppm / 1000);
     const adjustedPpm = ppm / operationShare;
     const stockConcGL = adjustedPpm / (1000 * dosatronRate);
@@ -1234,19 +1247,26 @@ function calcPB() {
     }
     document.getElementById('quickActionText').innerHTML = quickText;
 
+    const showFullPeriod = document.getElementById('pbDosageViewToggle').checked;
+    const displayG = showFullPeriod ? totalGFull : totalG;
+    const titleLabel = document.getElementById('resPbTotalTitle');
+    const periodLabel = document.getElementById('resPbPeriodLabel');
+    titleLabel.innerText = showFullPeriod ? 'Full Period Dosage' : 'Selected Period Dosage';
+    periodLabel.innerText = showFullPeriod ? `Day 1 ~ ${Math.min(days, 40)}` : `Day ${startDay} ~ ${endDay}`;
+
     const totalWeElem = document.getElementById('resPbTotal');
     const totalWeUnit = document.getElementById('resPbUnit');
-    if (totalG <= 500) {
-        totalWeElem.innerText = fmt1(totalG);
+    if (displayG <= 500) {
+        totalWeElem.innerText = fmt1(displayG);
         totalWeUnit.innerText = 'g';
     } else {
-        totalWeElem.innerText = fmt1(totalG / 1000);
+        totalWeElem.innerText = fmt1(displayG / 1000);
         totalWeUnit.innerText = 'kg';
     }
 
     const totalUnitsElem = document.getElementById('resPbTotalUnits');
     if (showUnits && pkgGrams > 0) {
-        let totalUnits = fmtPct(totalG / pkgGrams);
+        let totalUnits = fmtPct(displayG / pkgGrams);
         totalUnitsElem.innerText = `≈ ${totalUnits} ${pkgName}s Needed`;
     } else {
         totalUnitsElem.innerText = `-`;
