@@ -1274,6 +1274,28 @@ function calcPB() {
     }
 
     const wePerTank = tankVol * (ppm / 1000);
+
+    // Pre-compute refill days for the full period (Day 1 ~ max)
+    let refillDaysFull = [];
+    {
+        let _remain = 0;
+        for (let d = 1; d <= days && d <= 40; d++) {
+            const fi = data[breed][d]?.dailyIntake || 0;
+            const dailyWater = (fi * wfRatio * birds) / 1000;
+            if (isDosatron) {
+                const dailyStockUse = dailyWater * operationShare * dosatronRate;
+                let refills = 0;
+                while (_remain < dailyStockUse) { refills++; _remain += stockTankVol; }
+                _remain -= dailyStockUse;
+                if (refills > 0) refillDaysFull.push(d);
+            } else {
+                let refills = 0;
+                while (_remain < dailyWater) { refills++; _remain += tankVol; }
+                _remain -= dailyWater;
+                if (refills > 0) refillDaysFull.push(d);
+            }
+        }
+    }
     const adjustedPpm = ppm / operationShare;
     const stockConcGL = adjustedPpm / (1000 * dosatronRate);
     const wePerStockTank = stockConcGL * stockTankVol;
@@ -1353,8 +1375,10 @@ function calcPB() {
         }
     }
 
-    document.getElementById('resPbSchedule').innerHTML = formatDays(refillDays);
-    document.getElementById('dgStockPrepDays').innerHTML = refillDays.length > 0 ? '<strong style="color:#2d8a4e;">Day ' + refillDays.join(', ') + '</strong>' : 'No refills required';
+    const showFullPeriodSchedule = document.getElementById('pbDosageViewToggle').checked;
+    const scheduleDays = showFullPeriodSchedule ? refillDaysFull : refillDays;
+    document.getElementById('resPbSchedule').innerHTML = formatDays(scheduleDays);
+    document.getElementById('dgStockPrepDays').innerHTML = scheduleDays.length > 0 ? '<strong style="color:#2d8a4e;">Day ' + scheduleDays.join(', ') + '</strong>' : 'No refills required';
 
     let quickText = "";
     if (isDosatron) {
@@ -1374,7 +1398,7 @@ function calcPB() {
     }
     document.getElementById('quickActionText').innerHTML = quickText;
 
-    const showFullPeriod = document.getElementById('pbDosageViewToggle').checked;
+    const showFullPeriod = showFullPeriodSchedule;
     const displayG = showFullPeriod ? totalGFull : totalG;
     const titleLabel = document.getElementById('resPbTotalTitle');
     const periodLabel = document.getElementById('resPbPeriodLabel');
