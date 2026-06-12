@@ -1301,6 +1301,9 @@ function calcPB() {
     const wePerStockTank = stockConcGL * stockTankVol;
     const stockCoverageL = stockTankVol / dosatronRate;
 
+    const showFullPeriodSchedule = document.getElementById('pbDosageViewToggle').checked;
+    const maxDay = Math.min(days, 40);
+
     for (let d = 1; d <= days && d <= 40; d++) {
         const feedIntakeHead = data[breed][d]?.dailyIntake || 0;
         const waterIntakeHeadMl = feedIntakeHead * wfRatio;
@@ -1309,9 +1312,9 @@ function calcPB() {
         let refillsToday = 0;
         let actionGuide = `<span style="color:#bbb;">-</span>`;
         let trClass = "";
+        const isInPeriod = showFullPeriodSchedule ? true : (d >= startDay && d <= endDay);
 
         if (isDosatron) {
-            const isInPeriod = d >= startDay && d <= endDay;
             const dailyTreatedWaterL = isInPeriod ? dailyHouseWaterL * operationShare : 0;
             const dailyStockUseL = dailyTreatedWaterL * dosatronRate;
             if (isInPeriod) {
@@ -1350,7 +1353,6 @@ function calcPB() {
             }
             currentRemain -= dailyHouseWaterL;
 
-            const isInPeriod = d >= startDay && d <= endDay;
             if (refillsToday > 0 && isInPeriod) {
                 refillDays.push(d);
                 const addWe = refillsToday * wePerTank;
@@ -1375,7 +1377,6 @@ function calcPB() {
         }
     }
 
-    const showFullPeriodSchedule = document.getElementById('pbDosageViewToggle').checked;
     const scheduleDays = showFullPeriodSchedule ? refillDaysFull : refillDays;
     document.getElementById('resPbSchedule').innerHTML = formatDays(scheduleDays);
     document.getElementById('dgStockPrepDays').innerHTML = scheduleDays.length > 0 ? '<strong style="color:#2d8a4e;">Day ' + scheduleDays.join(', ') + '</strong>' : 'No refills required';
@@ -1389,12 +1390,15 @@ function calcPB() {
             ? ` Operate for ${fmtPct(operationHours)} hr/day, targeting ${fmtPct(operationSharePct)}% of daily water intake during operation.`
             : '';
         quickText = `* Set Dosatron at <strong style="font-size:1.25em;">${fmtPct(dosatronRatePct)}%</strong>. Prepare stock solution at <strong style="font-size:1.25em;">${fmt0(stockConcGL)}g/L</strong>. Add <strong style="font-size:1.25em;">${stockBatchGuide}</strong> to ${fmt0(stockTankVol)}L stock tank.${timedText}`;
-        quickText = `* Application Period: <strong style="font-size:1.25em;">Day ${startDay}~${endDay}</strong>. ` + quickText.replace('* ', '');
+        const periodStr = showFullPeriodSchedule ? `Day 1~${maxDay}` : `Day ${startDay}~${endDay}`;
+        quickText = `* Application Period: <strong style="font-size:1.25em;">${periodStr}</strong>. ` + quickText.replace('* ', '');
     } else {
         const oneTankGuide = showUnits && pkgGrams > 0
             ? `${fmtPct(wePerTank / pkgGrams)} ${pkgName}(s)`
             : `${fmt0(wePerTank)}g`;
-        quickText = `* Application Period: <strong style="font-size:1.25em;">Day ${startDay}~${endDay}</strong>. Please add <strong style="font-size:1.25em;">${oneTankGuide}</strong> of ProBe-Bac WE when the tank is refilled during the selected period.`;
+        const periodStr = showFullPeriodSchedule ? `Day 1~${maxDay}` : `Day ${startDay}~${endDay}`;
+        const periodDesc = showFullPeriodSchedule ? 'the entire grow-out period' : 'the selected period';
+        quickText = `* Application Period: <strong style="font-size:1.25em;">${periodStr}</strong>. Please add <strong style="font-size:1.25em;">${oneTankGuide}</strong> of ProBe-Bac WE when the tank is refilled during ${periodDesc}.`;
     }
     document.getElementById('quickActionText').innerHTML = quickText;
 
