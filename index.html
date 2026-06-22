@@ -542,7 +542,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="res-card we-total">
         <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
             <label class="toggle-switch" style="margin-top:0;">
-                <input type="checkbox" id="pbDosageViewToggle" class="toggle-green" onchange="calcPB()" checked>
+                <span id="pbDosageViewToggleWrap" style="display:inline-flex;">
+                    <input type="checkbox" id="pbDosageViewToggle" class="toggle-green" onchange="calcPB()" checked>
+                </span>
                 <span id="resPbTotalTitle" style="font-size:0.82em; font-weight:700; color:#333; white-space:nowrap;"></span>
             </label>
         </div>
@@ -1076,6 +1078,8 @@ function applySpeciesDefaults() {
     document.getElementById('pbBirdsLabel').textContent = isSwine ? 'No. of Piglets:' : 'No. of Birds:';
     document.getElementById('dgBirdsLabel').textContent = isSwine ? 'No. of Piglets' : 'No. of Birds';
     document.getElementById('animalWord').textContent = isSwine ? 'pigs' : 'birds';
+    document.getElementById('pbDosageViewToggleWrap').style.display = isSwine ? 'none' : 'inline-flex';
+    document.getElementById('pbDosageViewToggle').checked = !isSwine;
 
     const daysEl = document.getElementById('pbDays');
     const birdsEl = document.getElementById('pbBirds');
