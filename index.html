@@ -765,7 +765,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                             </select>
                         </div>
                         <div class="field-box" id="dgDaysField">
-                            <label>Marketed Days</label>
+                            <label id="dgDaysLabel">Marketed Days</label>
                             <input type="text" inputmode="decimal" id="dgDays" value="35" oninput="formatNum(this); dgSync('dgDays','pbDays'); calcPB()">
                         </div>
                         <div class="field-box">
@@ -893,7 +893,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </select>
         </div>
         <div class="field-box" id="pbDaysField">
-            <label>Marketed Days:</label>
+            <label id="pbDaysLabel">Marketed Days:</label>
             <input type="text" inputmode="decimal" id="pbDays" value="35" oninput="formatNum(this); calcPB()">
         </div>
         <div class="field-box">
@@ -1070,24 +1070,39 @@ function applySpeciesDefaults() {
     const isSwine = species === 'swine';
     document.getElementById('speciesSwitch').classList.toggle('swine', isSwine);
     document.getElementById('pbBreedField').style.display = isSwine ? 'none' : 'block';
-    document.getElementById('pbDaysField').style.display = isSwine ? 'none' : 'block';
     document.getElementById('dgBreedField').style.display = isSwine ? 'none' : 'block';
-    document.getElementById('dgDaysField').style.display = isSwine ? 'none' : 'block';
+    document.getElementById('pbDaysLabel').textContent = isSwine ? 'Weaning Day:' : 'Marketed Days:';
+    document.getElementById('dgDaysLabel').textContent = isSwine ? 'Weaning Day' : 'Marketed Days';
     document.getElementById('pbBirdsLabel').textContent = isSwine ? 'No. of Piglets:' : 'No. of Birds:';
     document.getElementById('dgBirdsLabel').textContent = isSwine ? 'No. of Piglets' : 'No. of Birds';
     document.getElementById('animalWord').textContent = isSwine ? 'pigs' : 'birds';
 
+    const daysEl = document.getElementById('pbDays');
     const birdsEl = document.getElementById('pbBirds');
     const startEl = document.getElementById('pbStartDay');
     const endEl = document.getElementById('pbEndDay');
+    const wfRatioEl = document.getElementById('pbWFRatio');
+    const ppmEl = document.getElementById('pbPpm');
+    const ppmDosatronEl = document.getElementById('pbPpmDosatron');
+    const tankEl = document.getElementById('pbTank');
     if (isSwine) {
+        daysEl.value = 21;
         birdsEl.value = (500).toLocaleString('en-US');
         startEl.value = 21;
         endEl.value = 70;
+        wfRatioEl.value = 2.5;
+        ppmEl.value = 100;
+        ppmDosatronEl.value = 100;
+        tankEl.value = (1000).toLocaleString('en-US');
     } else {
+        daysEl.value = 35;
         birdsEl.value = (20000).toLocaleString('en-US');
         startEl.value = 1;
         endEl.value = 8;
+        wfRatioEl.value = 2;
+        ppmEl.value = 50;
+        ppmDosatronEl.value = 50;
+        tankEl.value = (1000).toLocaleString('en-US');
     }
     initDosatronGuide();
 }
