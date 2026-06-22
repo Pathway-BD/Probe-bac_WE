@@ -917,7 +917,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <input type="text" inputmode="decimal" id="pbStartDay" value="1" oninput="formatNum(this); calcPB()">
             </div>
             <div class="field-box" id="pbEndDayField">
-                <label>Application End Day:</label>
+                <label id="pbEndDayLabel">Application End Day:</label>
                 <input type="text" inputmode="decimal" id="pbEndDay" value="8" oninput="formatNum(this); calcPB()">
             </div>
         </div>
@@ -1089,6 +1089,7 @@ function applySpeciesDefaults() {
     document.getElementById('dgStartDayField').style.display = isSwine ? 'none' : 'block';
     document.getElementById('pbWeaningNote').style.display = isSwine ? 'block' : 'none';
     document.getElementById('dgWeaningNote').style.display = isSwine ? 'block' : 'none';
+    document.getElementById('pbEndDayLabel').textContent = isSwine ? 'End Day:' : 'Application End Day:';
 
     const pbDaysRow = document.getElementById('pbDaysRow');
     const pbEndDayField = document.getElementById('pbEndDayField');
