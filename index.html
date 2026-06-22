@@ -769,6 +769,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <div class="field-box" id="dgDaysField">
                             <label id="dgDaysLabel">Marketed Days</label>
                             <input type="text" inputmode="decimal" id="dgDays" value="35" oninput="formatNum(this); dgSync('dgDays','pbDays'); calcPB()">
+                            <small id="dgWeaningNote" style="display:none; color:#888; font-size:0.78em; margin-top:4px;">Note: This data is linked to the Day 21–70 age-range dataset.</small>
                         </div>
                         <div class="field-box">
                             <label id="dgBirdsLabel">No. of Birds</label>
@@ -784,7 +785,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <div class="dg-settings-group">
                     <div class="dg-settings-group-title">Application Period</div>
                     <div class="dg-form-grid">
-                        <div class="field-box">
+                        <div class="field-box" id="dgStartDayField">
                             <label>Start Day</label>
                             <input type="text" inputmode="decimal" id="dgStartDay" value="1" oninput="formatNum(this); dgSync('dgStartDay','pbStartDay'); calcPB()">
                         </div>
@@ -897,6 +898,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="field-box" id="pbDaysField">
             <label id="pbDaysLabel">Marketed Days:</label>
             <input type="text" inputmode="decimal" id="pbDays" value="35" oninput="formatNum(this); calcPB()">
+            <small id="pbWeaningNote" style="display:none; color:#888; font-size:0.78em; margin-top:4px;">Note: This data is linked to the Day 21–70 age-range dataset.</small>
         </div>
         <div class="field-box">
             <label id="pbBirdsLabel">No. of Birds:</label>
@@ -907,7 +909,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <input type="text" inputmode="decimal" id="pbWFRatio" value="2" oninput="calcPB()">
         </div>
         <div id="pbPeriodFields" class="period-fields" style="display:none;">
-            <div class="field-box">
+            <div class="field-box" id="pbStartDayField">
                 <label>Application Start Day:</label>
                 <input type="text" inputmode="decimal" id="pbStartDay" value="1" oninput="formatNum(this); calcPB()">
             </div>
@@ -1080,6 +1082,10 @@ function applySpeciesDefaults() {
     document.getElementById('animalWord').textContent = isSwine ? 'pigs' : 'birds';
     document.getElementById('pbDosageViewToggleWrap').style.display = isSwine ? 'none' : 'inline-flex';
     document.getElementById('pbDosageViewToggle').checked = !isSwine;
+    document.getElementById('pbStartDayField').style.display = isSwine ? 'none' : 'block';
+    document.getElementById('dgStartDayField').style.display = isSwine ? 'none' : 'block';
+    document.getElementById('pbWeaningNote').style.display = isSwine ? 'block' : 'none';
+    document.getElementById('dgWeaningNote').style.display = isSwine ? 'block' : 'none';
 
     const daysEl = document.getElementById('pbDays');
     const birdsEl = document.getElementById('pbBirds');
@@ -1301,7 +1307,9 @@ function calcPB() {
     const operationSharePct = Math.min(Math.max(getVal('pbOperationShare', (operationHours / 24) * 100), 0.1), 100);
     const operationShare = operationMode === 'timed' ? operationSharePct / 100 : 1;
     const isDosatron = method === 'dosatron';
-    const startDay = Math.max(minDay, Math.round(getVal('pbStartDay', minDay)));
+    const startDay = species === 'swine'
+        ? Math.max(minDay, Math.round(getVal('pbDays', minDay)))
+        : Math.max(minDay, Math.round(getVal('pbStartDay', minDay)));
     const endDay = Math.min(Math.round(getVal('pbEndDay', species === 'swine' ? 70 : 8)), maxDay);
     const pkgName = document.getElementById('pbPkgName').value || 'Unit';
     const pkgGrams = getVal('pbPkgGrams', 500);
