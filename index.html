@@ -770,7 +770,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <div class="field-box" id="dgDaysField">
                             <label id="dgDaysLabel">Marketed Days</label>
                             <input type="text" inputmode="decimal" id="dgDays" value="35" oninput="formatNum(this); dgSync('dgDays','pbDays'); calcPB()">
-                            <small id="dgWeaningNote" style="display:none; color:#888; font-size:0.78em; margin-top:4px;">Note: This data is linked to the Day 21–70 age-range dataset.</small>
                         </div>
                         <div class="field-box">
                             <label id="dgBirdsLabel">No. of Birds</label>
@@ -856,6 +855,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         ✅ These settings are used to calculate the required dosage and operation plan.
                     </div>
                 </div>
+
+                <small id="dgWeaningNote" style="display:none; color:#888; font-size:0.78em;">Note: This data is linked to the Day 21–70 age-range dataset.</small>
 
             </div><!-- /dg-settings-body -->
         </div><!-- /dg-settings-panel -->
