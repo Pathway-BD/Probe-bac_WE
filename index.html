@@ -160,6 +160,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         margin-top: 10px; padding-top: 10px; border-top: 1px dashed #ffd8a8;
         display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
     }
+    .field-box-row.is-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .dosatron-fields { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #ffd8a8; }
     .dosatron-card { display: none; border-left: 10px solid #6f42c1; background: #fbf8ff; }
     .res-card.farm-vars-card { border-left: 10px solid #e65100; background: #fff9f0; }
@@ -782,14 +783,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     </div>
                 </div>
 
-                <div class="dg-settings-group">
+                <div class="dg-settings-group" id="dgPeriodGroup">
                     <div class="dg-settings-group-title">Application Period</div>
                     <div class="dg-form-grid">
                         <div class="field-box" id="dgStartDayField">
                             <label>Start Day</label>
                             <input type="text" inputmode="decimal" id="dgStartDay" value="1" oninput="formatNum(this); dgSync('dgStartDay','pbStartDay'); calcPB()">
                         </div>
-                        <div class="field-box">
+                        <div class="field-box" id="dgEndDayField">
                             <label>End Day</label>
                             <input type="text" inputmode="decimal" id="dgEndDay" value="8" oninput="formatNum(this); dgSync('dgEndDay','pbEndDay'); calcPB()">
                         </div>
@@ -895,10 +896,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <option value="ross308">Ross 308</option>
             </select>
         </div>
-        <div class="field-box" id="pbDaysField">
-            <label id="pbDaysLabel">Marketed Days:</label>
-            <input type="text" inputmode="decimal" id="pbDays" value="35" oninput="formatNum(this); calcPB()">
-            <small id="pbWeaningNote" style="display:none; color:#888; font-size:0.78em; margin-top:4px;">Note: This data is linked to the Day 21–70 age-range dataset.</small>
+        <div class="field-box-row" id="pbDaysRow">
+            <div class="field-box" id="pbDaysField">
+                <label id="pbDaysLabel">Marketed Days:</label>
+                <input type="text" inputmode="decimal" id="pbDays" value="35" oninput="formatNum(this); calcPB()">
+                <small id="pbWeaningNote" style="display:none; color:#888; font-size:0.78em; margin-top:4px;">Note: This data is linked to the Day 21–70 age-range dataset.</small>
+            </div>
         </div>
         <div class="field-box">
             <label id="pbBirdsLabel">No. of Birds:</label>
@@ -913,8 +916,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <label>Application Start Day:</label>
                 <input type="text" inputmode="decimal" id="pbStartDay" value="1" oninput="formatNum(this); calcPB()">
             </div>
-            <div class="field-box">
-                <label>Application End Day:</label>
+            <div class="field-box" id="pbEndDayField">
+                <label id="pbEndDayLabel">Application End Day:</label>
                 <input type="text" inputmode="decimal" id="pbEndDay" value="8" oninput="formatNum(this); calcPB()">
             </div>
         </div>
@@ -1086,6 +1089,26 @@ function applySpeciesDefaults() {
     document.getElementById('dgStartDayField').style.display = isSwine ? 'none' : 'block';
     document.getElementById('pbWeaningNote').style.display = isSwine ? 'block' : 'none';
     document.getElementById('dgWeaningNote').style.display = isSwine ? 'block' : 'none';
+    document.getElementById('pbEndDayLabel').textContent = isSwine ? 'End Day:' : 'Application End Day:';
+
+    const pbDaysRow = document.getElementById('pbDaysRow');
+    const pbEndDayField = document.getElementById('pbEndDayField');
+    const pbStartDayField = document.getElementById('pbStartDayField');
+    const dgDaysField = document.getElementById('dgDaysField');
+    const dgEndDayField = document.getElementById('dgEndDayField');
+    const dgStartDayField = document.getElementById('dgStartDayField');
+    const dgPeriodGroup = document.getElementById('dgPeriodGroup');
+    if (isSwine) {
+        pbDaysRow.classList.add('is-grid');
+        pbDaysRow.appendChild(pbEndDayField);
+        dgDaysField.insertAdjacentElement('afterend', dgEndDayField);
+        dgPeriodGroup.style.display = 'none';
+    } else {
+        pbDaysRow.classList.remove('is-grid');
+        pbStartDayField.insertAdjacentElement('afterend', pbEndDayField);
+        dgStartDayField.insertAdjacentElement('afterend', dgEndDayField);
+        dgPeriodGroup.style.display = 'block';
+    }
 
     const daysEl = document.getElementById('pbDays');
     const birdsEl = document.getElementById('pbBirds');
@@ -1343,7 +1366,7 @@ function calcPB() {
         document.getElementById('varsOverlay')?.classList.remove('panel-open');
         document.body.style.overflow = '';
     }
-    document.getElementById('pbPeriodFields').style.display = isDosatron ? 'none' : 'grid';
+    document.getElementById('pbPeriodFields').style.display = (isDosatron || species === 'swine') ? 'none' : 'grid';
     document.getElementById('pbTimedFields').style.display = isDosatron && operationMode === 'timed' ? 'block' : 'none';
     document.getElementById('pbTimedWarning').style.display = isDosatron && operationMode === 'timed' ? 'block' : 'none';
     document.getElementById('dosatronNote').style.display = isDosatron ? 'inline' : 'none';
