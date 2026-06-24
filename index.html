@@ -333,6 +333,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         row-gap: 4px;
     }
     .dg-action-label { font-size: 0.75em; font-weight: 800; letter-spacing: 1.5px; }
+    .dg-period-group { display: flex; align-items: center; gap: 8px; }
     .dg-period-toggle { margin: 0; gap: 6px; }
     .dg-period-toggle input { transform: scale(0.72); transform-origin: left center; }
     .dg-period-toggle-label { font-size: 0.72em; font-weight: 700; color: #fff; white-space: nowrap; }
@@ -653,12 +654,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <!-- Action Card -->
         <div class="dg-action-card">
             <div class="dg-action-header">
-                <span class="dg-action-label">TODAY'S ACTION</span>
-                <label class="toggle-switch dg-period-toggle" id="dgFullPeriodToggleWrap">
-                    <input type="checkbox" id="dgFullPeriodToggle" class="toggle-green" onchange="dgSyncCheck('dgFullPeriodToggle','pbDosageViewToggle'); calcPB()">
-                    <span class="dg-period-toggle-label">Full Period</span>
-                </label>
-                <span class="dg-period-badge" id="dgPeriodBadge">Day 1–8</span>
+                <span class="dg-action-label">TODAY'S GUIDE</span>
+                <div class="dg-period-group">
+                    <label class="toggle-switch dg-period-toggle" id="dgFullPeriodToggleWrap">
+                        <input type="checkbox" id="dgFullPeriodToggle" class="toggle-green" onchange="dgSyncCheck('dgFullPeriodToggle','pbDosageViewToggle'); calcPB()">
+                        <span class="dg-period-toggle-label">Full Period</span>
+                    </label>
+                    <span class="dg-period-badge" id="dgPeriodBadge">Day 1–8</span>
+                </div>
             </div>
             <div class="dg-action-body">
                 <div class="dg-action-headline">
