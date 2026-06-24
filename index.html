@@ -329,8 +329,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         display: flex;
         align-items: center;
         justify-content: space-between;
+        flex-wrap: wrap;
+        row-gap: 4px;
     }
     .dg-action-label { font-size: 0.75em; font-weight: 800; letter-spacing: 1.5px; }
+    .dg-period-toggle { margin: 0; gap: 6px; }
+    .dg-period-toggle input { transform: scale(0.72); transform-origin: left center; }
+    .dg-period-toggle-label { font-size: 0.72em; font-weight: 700; color: #fff; white-space: nowrap; }
     .dg-period-badge {
         background: rgba(255,255,255,0.22);
         border: 1px solid rgba(255,255,255,0.55);
@@ -649,6 +654,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="dg-action-card">
             <div class="dg-action-header">
                 <span class="dg-action-label">TODAY'S ACTION</span>
+                <label class="toggle-switch dg-period-toggle" id="dgFullPeriodToggleWrap">
+                    <input type="checkbox" id="dgFullPeriodToggle" class="toggle-green" onchange="dgSyncCheck('dgFullPeriodToggle','pbDosageViewToggle'); calcPB()">
+                    <span class="dg-period-toggle-label">Full Period</span>
+                </label>
                 <span class="dg-period-badge" id="dgPeriodBadge">Day 1–8</span>
             </div>
             <div class="dg-action-body">
@@ -1086,6 +1095,8 @@ function applySpeciesDefaults() {
     document.getElementById('animalWord').textContent = isSwine ? 'pigs' : 'birds';
     document.getElementById('pbDosageViewToggleWrap').style.display = isSwine ? 'none' : 'inline-flex';
     document.getElementById('pbDosageViewToggle').checked = !isSwine;
+    document.getElementById('dgFullPeriodToggleWrap').style.display = isSwine ? 'none' : 'inline-flex';
+    document.getElementById('dgFullPeriodToggle').checked = !isSwine;
     document.getElementById('pbStartDayField').style.display = isSwine ? 'none' : 'block';
     document.getElementById('dgStartDayField').style.display = isSwine ? 'none' : 'block';
     document.getElementById('pbWeaningNote').style.display = isSwine ? 'block' : 'none';
@@ -1205,6 +1216,9 @@ function initDosatronGuide() {
     const dgDisp = document.getElementById('dgDispUnit');
     const pbDisp = document.getElementById('pbDispUnitToggle');
     if (dgDisp && pbDisp) dgDisp.checked = pbDisp.checked;
+    const dgFullPeriod = document.getElementById('dgFullPeriodToggle');
+    const pbFullPeriod = document.getElementById('pbDosageViewToggle');
+    if (dgFullPeriod && pbFullPeriod) dgFullPeriod.checked = pbFullPeriod.checked;
     const pbPpmD = document.getElementById('pbPpmDosatron');
     const dgPpm = document.getElementById('dgPpm');
     if (dgPpm && pbPpmD) dgPpm.value = pbPpmD.value;
@@ -1213,20 +1227,25 @@ function initDosatronGuide() {
 function updateDosatronGuide(params) {
     const { dosatronRatePct, operationMode, operationHours, operationSharePct,
             stockTankVol, wePerStockTank, stockConcGL, adjustedPpm, stockCoverageL,
-            startDay, endDay, totalG, pkgGrams, pkgName, showUnits, fmtPct, fmt0 } = params;
+            startDay, endDay, minDay, maxDay, totalG, totalGFull, showFullPeriod,
+            pkgGrams, pkgName, showUnits, fmtPct, fmt0 } = params;
 
-    const period = `Day ${startDay}–${endDay}`;
+    const periodStart = showFullPeriod ? minDay : startDay;
+    const periodEnd = showFullPeriod ? maxDay : endDay;
+    const displayTotalG = showFullPeriod ? totalGFull : totalG;
+
+    const period = `Day ${periodStart}–${periodEnd}`;
     const weLabel = showUnits && pkgGrams > 0
         ? `${fmtPct(wePerStockTank / pkgGrams)} ${pkgName}`
         : `${fmt0(wePerStockTank)} g`;
-    const totalBags = pkgGrams > 0 ? fmtPct(totalG / pkgGrams) : '–';
+    const totalBags = pkgGrams > 0 ? fmtPct(displayTotalG / pkgGrams) : '–';
     const rateLabel = `${fmtPct(dosatronRatePct)}%`;
     const ratioLabel = `(1:${fmt0(100 / dosatronRatePct)})`;
     const isTimed = operationMode === 'timed';
 
     document.getElementById('dgPeriodBadge').textContent = period;
     document.getElementById('dgKpiTitle').textContent = `KEY VALUES (FOR ${period.toUpperCase()})`;
-    document.getElementById('dgKpiPeriod').textContent = `${startDay}–${endDay}`;
+    document.getElementById('dgKpiPeriod').textContent = `${periodStart}–${periodEnd}`;
 
     document.getElementById('dgWeAmount').textContent = weLabel;
     document.getElementById('dgStockVolDisplay').textContent = fmt0(stockTankVol);
@@ -1235,7 +1254,7 @@ function updateDosatronGuide(params) {
     document.getElementById('dgChipRateSub').textContent = ratioLabel;
     document.getElementById('dgChipOpTime').textContent = isTimed ? `${fmtPct(operationHours)} hr / day` : 'All day';
     document.getElementById('dgChipWater').textContent = isTimed ? `${fmtPct(operationSharePct)}%` : '100%';
-    document.getElementById('dgChipBags').textContent = showUnits && pkgGrams > 0 ? `≈ ${totalBags} ${pkgName}s` : `≈ ${fmt0(totalG)} g`;
+    document.getElementById('dgChipBags').textContent = showUnits && pkgGrams > 0 ? `≈ ${totalBags} ${pkgName}s` : `≈ ${fmt0(displayTotalG)} g`;
 
     const warnBar = document.getElementById('dgWarningBar');
     warnBar.style.display = isTimed ? 'block' : 'none';
@@ -1559,7 +1578,8 @@ function calcPB() {
         updateDosatronGuide({
             dosatronRatePct, operationMode, operationHours, operationSharePct,
             stockTankVol, wePerStockTank, stockConcGL, adjustedPpm, stockCoverageL,
-            startDay, endDay, totalG, pkgGrams, pkgName, showUnits, fmtPct, fmt0
+            startDay, endDay, minDay, maxDay, totalG, totalGFull,
+            showFullPeriod: showFullPeriodSchedule, pkgGrams, pkgName, showUnits, fmtPct, fmt0
         });
     }
 }
