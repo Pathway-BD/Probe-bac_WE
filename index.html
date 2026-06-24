@@ -618,7 +618,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="dosatron-input-group" id="pbDosatronFields">
         <div class="field-box">
             <label>Dosatron Injection Rate (%):</label>
-            <input type="text" inputmode="decimal" id="pbDosatronRate" value="1" oninput="formatNum(this); calcPB()">
+            <input type="text" inputmode="decimal" id="pbDosatronRate" value="1" oninput="formatNum(this, 100); calcPB()">
         </div>
         <div class="field-box">
             <label>Stock Solution Tank Vol. (L):</label>
@@ -817,7 +817,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <div class="dg-form-grid">
                         <div class="field-box">
                             <label>Dosatron Injection Rate (%)</label>
-                            <input type="text" inputmode="decimal" id="dgDosatronRate" value="1" oninput="formatNum(this); dgSync('dgDosatronRate','pbDosatronRate'); calcPB()">
+                            <input type="text" inputmode="decimal" id="dgDosatronRate" value="1" oninput="formatNum(this, 100); dgSync('dgDosatronRate','pbDosatronRate'); calcPB()">
                         </div>
                         <div class="field-box">
                             <label>Operation Mode</label>
@@ -1176,6 +1176,11 @@ function formatNum(el, max) {
     }
 }
 
+function isBlank(id) {
+    const el = document.getElementById(id);
+    return !el || el.value.toString().trim() === '';
+}
+
 function getVal(id, def = 0) {
     let el = document.getElementById(id);
     if (!el) return def;
@@ -1236,7 +1241,7 @@ function updateDosatronGuide(params) {
     const { dosatronRatePct, operationMode, operationHours, operationSharePct,
             stockTankVol, wePerStockTank, stockConcGL, adjustedPpm, stockCoverageL,
             startDay, endDay, minDay, maxDay, totalG, totalGFull, showFullPeriod,
-            pkgGrams, pkgName, showUnits, fmtPct, fmt0, dosatronInvalid } = params;
+            pkgGrams, pkgName, showUnits, fmtPct, fmt0, dosatronInvalid, periodInvalid } = params;
 
     const periodStart = showFullPeriod ? minDay : startDay;
     const periodEnd = showFullPeriod ? maxDay : endDay;
@@ -1253,9 +1258,9 @@ function updateDosatronGuide(params) {
     const ratioLabel = dosatronInvalid ? '' : `(1:${fmt0(100 / dosatronRatePct)})`;
     const isTimed = operationMode === 'timed';
 
-    document.getElementById('dgPeriodBadge').textContent = period;
-    document.getElementById('dgKpiTitle').textContent = `KEY VALUES (FOR ${period.toUpperCase()})`;
-    document.getElementById('dgKpiPeriod').textContent = `${periodStart}–${periodEnd}`;
+    document.getElementById('dgPeriodBadge').textContent = periodInvalid ? '-' : period;
+    document.getElementById('dgKpiTitle').textContent = periodInvalid ? 'KEY VALUES' : `KEY VALUES (FOR ${period.toUpperCase()})`;
+    document.getElementById('dgKpiPeriod').textContent = periodInvalid ? '-' : `${periodStart}–${periodEnd}`;
 
     document.getElementById('dgWeAmount').textContent = weLabel;
     document.getElementById('dgStockVolDisplay').textContent = fmt0(stockTankVol);
@@ -1264,7 +1269,7 @@ function updateDosatronGuide(params) {
     document.getElementById('dgChipRateSub').textContent = ratioLabel;
     document.getElementById('dgChipOpTime').textContent = isTimed ? `${fmtPct(operationHours)} hr / day` : 'All day';
     document.getElementById('dgChipWater').textContent = isTimed ? `${fmtPct(operationSharePct)}%` : '100%';
-    document.getElementById('dgChipBags').textContent = dosatronInvalid ? '-' : (showUnits && pkgGrams > 0 ? `≈ ${totalBags} ${pkgName}s` : `≈ ${fmt0(displayTotalG)} g`);
+    document.getElementById('dgChipBags').textContent = (dosatronInvalid || periodInvalid) ? '-' : (showUnits && pkgGrams > 0 ? `≈ ${totalBags} ${pkgName}s` : `≈ ${fmt0(displayTotalG)} g`);
 
     const warnBar = document.getElementById('dgWarningBar');
     warnBar.style.display = isTimed ? 'block' : 'none';
@@ -1353,7 +1358,7 @@ function calcPB() {
     const ppm = method === 'dosatron' ? getVal('pbPpmDosatron', 50) : getVal('pbPpm', 50);
     const tankVol = Math.min(Math.max(getVal('pbTank', 1000), 10), 999999);
     const dosatronRateRaw = getVal('pbDosatronRate', 1);
-    const dosatronRatePct = Math.max(dosatronRateRaw, 0.01);
+    const dosatronRatePct = Math.min(Math.max(dosatronRateRaw, 0.01), 100);
     const dosatronRate = dosatronRatePct / 100;
     const stockTankVol = Math.max(getVal('pbStockTank', 100), 1);
     const operationMode = document.getElementById('pbOperationMode')?.value || 'continuous';
@@ -1367,11 +1372,23 @@ function calcPB() {
         if (el) el.value = operationShareStr;
     });
     const isDosatron = method === 'dosatron';
-    const dosatronInvalid = isDosatron && (dosatronRateRaw <= 0 || (operationMode === 'timed' && operationHoursRaw <= 0));
+
+    const requiredFields = ['pbDays', 'pbBirds', 'pbWFRatio', 'pbPkgGrams', 'pbEndDay'];
+    if (species !== 'swine') requiredFields.push('pbStartDay');
+    if (isDosatron) {
+        requiredFields.push('pbPpmDosatron', 'pbDosatronRate', 'pbStockTank');
+        if (operationMode === 'timed') requiredFields.push('pbOperationHours');
+    } else {
+        requiredFields.push('pbTank', 'pbPpm');
+    }
+    const hasEmptyInput = requiredFields.some(isBlank);
+
+    const dosatronInvalid = isDosatron && (dosatronRateRaw <= 0 || (operationMode === 'timed' && operationHoursRaw <= 0) || hasEmptyInput);
     const startDay = species === 'swine'
         ? Math.max(minDay, Math.round(getVal('pbDays', minDay)))
         : Math.max(minDay, Math.round(getVal('pbStartDay', minDay)));
     const endDay = Math.min(Math.round(getVal('pbEndDay', species === 'swine' ? 70 : 8)), maxDay);
+    const dayRangeInvalid = startDay > endDay;
     const pkgName = document.getElementById('pbPkgName').value || 'Unit';
     const pkgGrams = getVal('pbPkgGrams', 500);
     const showUnits = document.getElementById('pbDispUnitToggle').checked;
@@ -1459,6 +1476,7 @@ function calcPB() {
     const stockCoverageL = stockTankVol / dosatronRate;
 
     const showFullPeriodSchedule = document.getElementById('pbDosageViewToggle').checked;
+    const periodInvalid = (!showFullPeriodSchedule && dayRangeInvalid) || hasEmptyInput;
 
     let tankTooSmall = false;
     for (let d = minDay; d <= maxDay; d++) {
@@ -1538,8 +1556,8 @@ function calcPB() {
     document.getElementById('pbTankSizeWarning').style.display = tankTooSmall ? 'block' : 'none';
 
     const scheduleDays = showFullPeriodSchedule ? refillDaysFull : refillDays;
-    document.getElementById('resPbSchedule').innerHTML = formatDays(scheduleDays);
-    document.getElementById('dgStockPrepDays').innerHTML = scheduleDays.length > 0 ? '<strong style="color:#2d8a4e;">Day ' + scheduleDays.join(', ') + '</strong>' : 'No refills required';
+    document.getElementById('resPbSchedule').innerHTML = periodInvalid ? '-' : formatDays(scheduleDays);
+    document.getElementById('dgStockPrepDays').innerHTML = periodInvalid ? '-' : (scheduleDays.length > 0 ? '<strong style="color:#2d8a4e;">Day ' + scheduleDays.join(', ') + '</strong>' : 'No refills required');
 
     let quickText = "";
     if (isDosatron) {
@@ -1560,18 +1578,21 @@ function calcPB() {
         const periodDesc = showFullPeriodSchedule ? 'the entire grow-out period' : 'the selected period';
         quickText = `* Application Period: <strong style="font-size:1.25em;">${periodStr}</strong>. Please add <strong style="font-size:1.25em;">${oneTankGuide}</strong> of ProBe-Bac WE when the tank is refilled during ${periodDesc}.`;
     }
-    document.getElementById('quickActionText').innerHTML = quickText;
+    document.getElementById('quickActionText').innerHTML = periodInvalid ? '-' : quickText;
 
     const showFullPeriod = showFullPeriodSchedule;
     const displayG = showFullPeriod ? totalGFull : totalG;
     const titleLabel = document.getElementById('resPbTotalTitle');
     const periodLabel = document.getElementById('resPbPeriodLabel');
     titleLabel.innerText = showFullPeriod ? 'Full Period Dosage' : 'Selected Period Dosage';
-    periodLabel.innerText = showFullPeriod ? `Day ${minDay} ~ ${maxDay}` : `Day ${startDay} ~ ${endDay}`;
+    periodLabel.innerText = periodInvalid ? '-' : (showFullPeriod ? `Day ${minDay} ~ ${maxDay}` : `Day ${startDay} ~ ${endDay}`);
 
     const totalWeElem = document.getElementById('resPbTotal');
     const totalWeUnit = document.getElementById('resPbUnit');
-    if (displayG <= 500) {
+    if (periodInvalid) {
+        totalWeElem.innerText = '-';
+        totalWeUnit.innerText = '';
+    } else if (displayG <= 500) {
         totalWeElem.innerText = fmt1(displayG);
         totalWeUnit.innerText = 'g';
     } else {
@@ -1580,7 +1601,9 @@ function calcPB() {
     }
 
     const totalUnitsElem = document.getElementById('resPbTotalUnits');
-    if (showUnits && pkgGrams > 0) {
+    if (periodInvalid) {
+        totalUnitsElem.innerText = '-';
+    } else if (showUnits && pkgGrams > 0) {
         let totalUnits = fmtPct(displayG / pkgGrams);
         totalUnitsElem.innerText = `≈ ${totalUnits} ${pkgName}s Needed`;
     } else {
@@ -1602,7 +1625,7 @@ function calcPB() {
             stockTankVol, wePerStockTank, stockConcGL, adjustedPpm, stockCoverageL,
             startDay, endDay, minDay, maxDay, totalG, totalGFull,
             showFullPeriod: showFullPeriodSchedule, pkgGrams, pkgName, showUnits, fmtPct, fmt0,
-            dosatronInvalid
+            dosatronInvalid, periodInvalid
         });
     }
 }
