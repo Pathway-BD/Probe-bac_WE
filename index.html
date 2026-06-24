@@ -97,6 +97,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 6px;
         font-size: 15px; background: #fff;
     }
+    .field-box input[readonly] { background: #f0f2f4; color: #555; cursor: not-allowed; }
     .toggle-switch { display: inline-flex; align-items: center; cursor: pointer; gap: 10px; margin-top: 5px; }
     .toggle-switch input { appearance: none; width: 44px; height: 24px; background: #ccc; border-radius: 20px; position: relative; outline: none; cursor: pointer; transition: background 0.3s; margin: 0; }
     .toggle-switch input::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: white; border-radius: 50%; transition: transform 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
@@ -634,7 +635,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div>
             <div class="field-box">
                 <label>Water Intake During Operation (%):</label>
-                <input type="text" inputmode="decimal" id="pbOperationShare" value="25" oninput="formatNum(this); calcPB()">
+                <input type="text" inputmode="decimal" id="pbOperationShare" value="25" readonly>
             </div>
             <div class="timed-warning" id="pbTimedWarning">Timed operation increases the required drinking-water concentration during the operating window. Confirm actual water intake pattern and Dosatron calibration before field use.</div>
         </div>
@@ -658,7 +659,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <div class="dg-period-group">
                     <label class="toggle-switch dg-period-toggle" id="dgFullPeriodToggleWrap">
                         <input type="checkbox" id="dgFullPeriodToggle" class="toggle-green" onchange="dgSyncCheck('dgFullPeriodToggle','pbDosageViewToggle'); calcPB()">
-                        <span class="dg-period-toggle-label">Full Period</span>
+                        <span class="dg-period-toggle-label" id="dgPeriodToggleLabel">Full Period</span>
                     </label>
                     <span class="dg-period-badge" id="dgPeriodBadge">Day 1–8</span>
                 </div>
@@ -831,7 +832,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                             </div>
                             <div class="field-box">
                                 <label>Water Intake During Operation (%)</label>
-                                <input type="text" inputmode="decimal" id="dgOpShare" value="25" oninput="formatNum(this); dgSync('dgOpShare','pbOperationShare'); calcPB()">
+                                <input type="text" inputmode="decimal" id="dgOpShare" value="25" readonly>
                             </div>
                         </div>
                     </div>
@@ -1238,6 +1239,8 @@ function updateDosatronGuide(params) {
     const displayTotalG = showFullPeriod ? totalGFull : totalG;
 
     const period = `Day ${periodStart}–${periodEnd}`;
+    const toggleLabel = document.getElementById('dgPeriodToggleLabel');
+    if (toggleLabel) toggleLabel.textContent = showFullPeriod ? 'Full Period' : 'Selected Period';
     const weLabel = showUnits && pkgGrams > 0
         ? `${fmtPct(wePerStockTank / pkgGrams)} ${pkgName}`
         : `${fmt0(wePerStockTank)} g`;
@@ -1350,8 +1353,13 @@ function calcPB() {
     const stockTankVol = Math.max(getVal('pbStockTank', 100), 1);
     const operationMode = document.getElementById('pbOperationMode')?.value || 'continuous';
     const operationHours = Math.min(Math.max(getVal('pbOperationHours', 6), 0.1), 24);
-    const operationSharePct = Math.min(Math.max(getVal('pbOperationShare', (operationHours / 24) * 100), 0.1), 100);
+    const operationSharePct = Math.min(Math.max((operationHours / 24) * 100, 0.1), 100);
     const operationShare = operationMode === 'timed' ? operationSharePct / 100 : 1;
+    const operationShareStr = operationSharePct.toLocaleString('en-US', {maximumFractionDigits: 1});
+    ['pbOperationShare', 'dgOpShare'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = operationShareStr;
+    });
     const isDosatron = method === 'dosatron';
     const startDay = species === 'swine'
         ? Math.max(minDay, Math.round(getVal('pbDays', minDay)))
