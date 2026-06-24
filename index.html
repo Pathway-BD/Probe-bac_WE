@@ -1232,7 +1232,7 @@ function updateDosatronGuide(params) {
     const { dosatronRatePct, operationMode, operationHours, operationSharePct,
             stockTankVol, wePerStockTank, stockConcGL, adjustedPpm, stockCoverageL,
             startDay, endDay, minDay, maxDay, totalG, totalGFull, showFullPeriod,
-            pkgGrams, pkgName, showUnits, fmtPct, fmt0 } = params;
+            pkgGrams, pkgName, showUnits, fmtPct, fmt0, dosatronInvalid } = params;
 
     const periodStart = showFullPeriod ? minDay : startDay;
     const periodEnd = showFullPeriod ? maxDay : endDay;
@@ -1241,12 +1241,12 @@ function updateDosatronGuide(params) {
     const period = `Day ${periodStart}–${periodEnd}`;
     const toggleLabel = document.getElementById('dgPeriodToggleLabel');
     if (toggleLabel) toggleLabel.textContent = showFullPeriod ? 'Full Period' : 'Selected Period';
-    const weLabel = showUnits && pkgGrams > 0
+    const weLabel = dosatronInvalid ? '-' : (showUnits && pkgGrams > 0
         ? `${fmtPct(wePerStockTank / pkgGrams)} ${pkgName}`
-        : `${fmt0(wePerStockTank)} g`;
+        : `${fmt0(wePerStockTank)} g`);
     const totalBags = pkgGrams > 0 ? fmtPct(displayTotalG / pkgGrams) : '–';
-    const rateLabel = `${fmtPct(dosatronRatePct)}%`;
-    const ratioLabel = `(1:${fmt0(100 / dosatronRatePct)})`;
+    const rateLabel = dosatronInvalid ? '-' : `${fmtPct(dosatronRatePct)}%`;
+    const ratioLabel = dosatronInvalid ? '' : `(1:${fmt0(100 / dosatronRatePct)})`;
     const isTimed = operationMode === 'timed';
 
     document.getElementById('dgPeriodBadge').textContent = period;
@@ -1260,7 +1260,7 @@ function updateDosatronGuide(params) {
     document.getElementById('dgChipRateSub').textContent = ratioLabel;
     document.getElementById('dgChipOpTime').textContent = isTimed ? `${fmtPct(operationHours)} hr / day` : 'All day';
     document.getElementById('dgChipWater').textContent = isTimed ? `${fmtPct(operationSharePct)}%` : '100%';
-    document.getElementById('dgChipBags').textContent = showUnits && pkgGrams > 0 ? `≈ ${totalBags} ${pkgName}s` : `≈ ${fmt0(displayTotalG)} g`;
+    document.getElementById('dgChipBags').textContent = dosatronInvalid ? '-' : (showUnits && pkgGrams > 0 ? `≈ ${totalBags} ${pkgName}s` : `≈ ${fmt0(displayTotalG)} g`);
 
     const warnBar = document.getElementById('dgWarningBar');
     warnBar.style.display = isTimed ? 'block' : 'none';
@@ -1278,10 +1278,10 @@ function updateDosatronGuide(params) {
         ? `Run for ${fmtPct(operationHours)} hr/day. Ensure ~${fmtPct(operationSharePct)}% of daily water intake during operation.`
         : 'Run system all day. Check coverage and refill stock tank as needed.';
 
-    document.getElementById('dgKpiAdjPpm').textContent = `${fmt0(adjustedPpm)} ppm`;
-    document.getElementById('dgKpiStockConc').textContent = `${fmt0(stockConcGL)} g/L`;
-    document.getElementById('dgKpiCoverage').textContent = `${fmt0(stockCoverageL)} L`;
-    document.getElementById('dgKpiBatch').textContent = `${fmt0(wePerStockTank)} g / ${fmt0(stockTankVol)}L`;
+    document.getElementById('dgKpiAdjPpm').textContent = dosatronInvalid ? '-' : `${fmt0(adjustedPpm)} ppm`;
+    document.getElementById('dgKpiStockConc').textContent = dosatronInvalid ? '-' : `${fmt0(stockConcGL)} g/L`;
+    document.getElementById('dgKpiCoverage').textContent = dosatronInvalid ? '-' : `${fmt0(stockCoverageL)} L`;
+    document.getElementById('dgKpiBatch').textContent = dosatronInvalid ? '-' : `${fmt0(wePerStockTank)} g / ${fmt0(stockTankVol)}L`;
 }
 
 function closeAllPanels() {
@@ -1348,11 +1348,13 @@ function calcPB() {
     const method = document.getElementById('pbMethod')?.value || 'tank';
     const ppm = method === 'dosatron' ? getVal('pbPpmDosatron', 50) : getVal('pbPpm', 50);
     const tankVol = Math.max(getVal('pbTank', 1000), 10);
-    const dosatronRatePct = Math.max(getVal('pbDosatronRate', 1), 0.01);
+    const dosatronRateRaw = getVal('pbDosatronRate', 1);
+    const dosatronRatePct = Math.max(dosatronRateRaw, 0.01);
     const dosatronRate = dosatronRatePct / 100;
     const stockTankVol = Math.max(getVal('pbStockTank', 100), 1);
     const operationMode = document.getElementById('pbOperationMode')?.value || 'continuous';
-    const operationHours = Math.min(Math.max(getVal('pbOperationHours', 6), 0.1), 24);
+    const operationHoursRaw = getVal('pbOperationHours', 6);
+    const operationHours = Math.min(Math.max(operationHoursRaw, 0.1), 24);
     const operationSharePct = Math.min(Math.max((operationHours / 24) * 100, 0.1), 100);
     const operationShare = operationMode === 'timed' ? operationSharePct / 100 : 1;
     const operationShareStr = operationSharePct.toLocaleString('en-US', {maximumFractionDigits: 1});
@@ -1361,6 +1363,7 @@ function calcPB() {
         if (el) el.value = operationShareStr;
     });
     const isDosatron = method === 'dosatron';
+    const dosatronInvalid = isDosatron && (dosatronRateRaw <= 0 || (operationMode === 'timed' && operationHoursRaw <= 0));
     const startDay = species === 'swine'
         ? Math.max(minDay, Math.round(getVal('pbDays', minDay)))
         : Math.max(minDay, Math.round(getVal('pbStartDay', minDay)));
@@ -1576,11 +1579,11 @@ function calcPB() {
         totalUnitsElem.innerText = `-`;
     }
 
-    document.getElementById('resDosatronSetting').innerText = `${fmtPct(dosatronRatePct)}% (1:${fmt0(100 / dosatronRatePct)})`;
-    document.getElementById('resStockConc').innerText = `${fmt0(stockConcGL)} g/L`;
-    document.getElementById('resAdjustedPpm').innerText = `${fmt0(adjustedPpm)} ppm`;
-    document.getElementById('resStockBatch').innerText = `${fmt0(wePerStockTank)} g / ${fmt0(stockTankVol)}L`;
-    document.getElementById('resStockCoverage').innerText = `${fmt0(stockCoverageL)} L`;
+    document.getElementById('resDosatronSetting').innerText = dosatronInvalid ? '-' : `${fmtPct(dosatronRatePct)}% (1:${fmt0(100 / dosatronRatePct)})`;
+    document.getElementById('resStockConc').innerText = dosatronInvalid ? '-' : `${fmt0(stockConcGL)} g/L`;
+    document.getElementById('resAdjustedPpm').innerText = dosatronInvalid ? '-' : `${fmt0(adjustedPpm)} ppm`;
+    document.getElementById('resStockBatch').innerText = dosatronInvalid ? '-' : `${fmt0(wePerStockTank)} g / ${fmt0(stockTankVol)}L`;
+    document.getElementById('resStockCoverage').innerText = dosatronInvalid ? '-' : `${fmt0(stockCoverageL)} L`;
 
     const eqFeedDosage = ppm * wfRatio * 10;
     document.getElementById('resPbEqFeedDesc').innerText = fmt0(eqFeedDosage);
@@ -1590,7 +1593,8 @@ function calcPB() {
             dosatronRatePct, operationMode, operationHours, operationSharePct,
             stockTankVol, wePerStockTank, stockConcGL, adjustedPpm, stockCoverageL,
             startDay, endDay, minDay, maxDay, totalG, totalGFull,
-            showFullPeriod: showFullPeriodSchedule, pkgGrams, pkgName, showUnits, fmtPct, fmt0
+            showFullPeriod: showFullPeriodSchedule, pkgGrams, pkgName, showUnits, fmtPct, fmt0,
+            dosatronInvalid
         });
     }
 }
