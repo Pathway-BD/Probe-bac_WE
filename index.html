@@ -786,7 +786,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         </div>
                         <div class="field-box">
                             <label id="dgBirdsLabel">No. of Birds</label>
-                            <input type="text" inputmode="decimal" id="dgBirds" value="20,000" oninput="formatNum(this); dgSync('dgBirds','pbBirds'); calcPB()">
+                            <input type="text" inputmode="decimal" id="dgBirds" value="20,000" oninput="formatNum(this, 100000000); dgSync('dgBirds','pbBirds'); calcPB()">
                         </div>
                         <div class="field-box">
                             <label>Water:Feed Ratio</label>
@@ -918,7 +918,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
         <div class="field-box">
             <label id="pbBirdsLabel">No. of Birds:</label>
-            <input type="text" inputmode="decimal" id="pbBirds" value="20,000" oninput="formatNum(this); calcPB()">
+            <input type="text" inputmode="decimal" id="pbBirds" value="20,000" oninput="formatNum(this, 100000000); calcPB()">
         </div>
         <div class="field-box">
             <label>Water:Feed Ratio:</label>
@@ -936,7 +936,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
         <div class="field-box" id="pbTankField">
             <label>Water Tank Vol. (L):</label>
-            <input type="text" inputmode="decimal" id="pbTank" value="1,000" oninput="formatNum(this); calcPB()">
+            <input type="text" inputmode="decimal" id="pbTank" value="1,000" oninput="formatNum(this, 999999); calcPB()">
         </div>
         <div class="field-box" id="pbPpmField">
             <label>WE Concentration in Drinking Water (ppm):</label>
@@ -1162,10 +1162,11 @@ function toggleSpecies() {
     calcPB();
 }
 
-function formatNum(el) {
+function formatNum(el, max) {
     let val = el.value.replace(/,/g, '');
     if (val === '') { el.value = ''; return; }
     if (!isNaN(val)) {
+        if (max !== undefined && parseFloat(val) > max) val = String(max);
         let parts = val.split('.');
         if (parts[0].length > 0) parts[0] = parseInt(parts[0], 10).toLocaleString('en-US');
         el.value = parts.join('.');
@@ -1343,11 +1344,11 @@ function calcPB() {
     const days = getVal('pbDays', 35);
     const minDay = species === 'swine' ? 21 : 1;
     const maxDay = species === 'swine' ? 70 : Math.min(days, 40);
-    const birds = getVal('pbBirds', 20000);
+    const birds = Math.min(getVal('pbBirds', 20000), 100000000);
     const wfRatio = getVal('pbWFRatio', 2);
     const method = document.getElementById('pbMethod')?.value || 'tank';
     const ppm = method === 'dosatron' ? getVal('pbPpmDosatron', 50) : getVal('pbPpm', 50);
-    const tankVol = Math.max(getVal('pbTank', 1000), 10);
+    const tankVol = Math.min(Math.max(getVal('pbTank', 1000), 10), 999999);
     const dosatronRateRaw = getVal('pbDosatronRate', 1);
     const dosatronRatePct = Math.max(dosatronRateRaw, 0.01);
     const dosatronRate = dosatronRatePct / 100;
