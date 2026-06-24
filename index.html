@@ -1405,6 +1405,11 @@ function calcPB() {
     document.getElementById('resStockBatch').innerText = `${fmt0(wePerStockTank)} g / ${fmt0(stockTankVol)}L`;
     document.getElementById('resStockCoverage').innerText = `${fmt0(stockCoverageL)} L`;
 
+    // NOTE: *10 is NOT a units bug. The drinking-water (WE) product is ~10x more
+    // concentrated/potent than the feed-grade additive product. ppm*wfRatio alone
+    // gives the equivalent in WE-product mass (g/MT); multiplying by 10 converts
+    // that into the equivalent mass of the (10x weaker) feed-grade additive product.
+    // Do not "fix" this back to ppm*wfRatio without re-checking product potency ratio.
     const eqFeedDosage = ppm * wfRatio * 10;
     document.getElementById('resPbEqFeedDesc').innerText = fmt0(eqFeedDosage);
 
